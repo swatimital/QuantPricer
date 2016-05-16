@@ -1,0 +1,299 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3A21E0571CE8B24F008F150F /* TrinomialTreeTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E0551CE8B24F008F150F /* TrinomialTreeTest.cpp */; };
+		3A21E05A1CE90124008F150F /* RecombiningTrinomialTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E0581CE90124008F150F /* RecombiningTrinomialTree.cpp */; };
+		3A21E05D1CE9041D008F150F /* NonRecombiningTrinomialTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E05B1CE9041D008F150F /* NonRecombiningTrinomialTree.cpp */; };
+		3A21E0631CE9C0E6008F150F /* VanillaOptionPricer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E0611CE9C0E6008F150F /* VanillaOptionPricer.cpp */; };
+		3A21E0661CE9DFBD008F150F /* AmericanOptionPricer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E0641CE9DFBD008F150F /* AmericanOptionPricer.cpp */; };
+		3AA94B3B1CDCED7C004D032A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AA94B3A1CDCED7C004D032A /* main.cpp */; };
+		3AA94B3F1CE343D1004D032A /* TrinomialTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AA94B3D1CE343D1004D032A /* TrinomialTree.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3A7215981C8CE61D000FE88F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		3A21E0551CE8B24F008F150F /* TrinomialTreeTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrinomialTreeTest.cpp; sourceTree = "<group>"; };
+		3A21E0561CE8B24F008F150F /* TrinomialTreeTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrinomialTreeTest.h; sourceTree = "<group>"; };
+		3A21E0581CE90124008F150F /* RecombiningTrinomialTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecombiningTrinomialTree.cpp; sourceTree = "<group>"; };
+		3A21E0591CE90124008F150F /* RecombiningTrinomialTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecombiningTrinomialTree.h; sourceTree = "<group>"; };
+		3A21E05B1CE9041D008F150F /* NonRecombiningTrinomialTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NonRecombiningTrinomialTree.cpp; sourceTree = "<group>"; };
+		3A21E05C1CE9041D008F150F /* NonRecombiningTrinomialTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NonRecombiningTrinomialTree.h; sourceTree = "<group>"; };
+		3A21E0611CE9C0E6008F150F /* VanillaOptionPricer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VanillaOptionPricer.cpp; sourceTree = "<group>"; };
+		3A21E0621CE9C0E6008F150F /* VanillaOptionPricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VanillaOptionPricer.h; sourceTree = "<group>"; };
+		3A21E0641CE9DFBD008F150F /* AmericanOptionPricer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AmericanOptionPricer.cpp; sourceTree = "<group>"; };
+		3A21E0651CE9DFBD008F150F /* AmericanOptionPricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmericanOptionPricer.h; sourceTree = "<group>"; };
+		3A72159A1C8CE61D000FE88F /* QuantPricer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = QuantPricer; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AA94B3A1CDCED7C004D032A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		3AA94B3D1CE343D1004D032A /* TrinomialTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrinomialTree.cpp; sourceTree = "<group>"; };
+		3AA94B3E1CE343D1004D032A /* TrinomialTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrinomialTree.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3A7215971C8CE61D000FE88F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3A21E0541CE8B239008F150F /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				3A21E0551CE8B24F008F150F /* TrinomialTreeTest.cpp */,
+				3A21E0561CE8B24F008F150F /* TrinomialTreeTest.h */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		3A7215911C8CE61D000FE88F = {
+			isa = PBXGroup;
+			children = (
+				3A21E0541CE8B239008F150F /* UnitTests */,
+				3A72159C1C8CE61D000FE88F /* QuantPricer */,
+				3A72159B1C8CE61D000FE88F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3A72159B1C8CE61D000FE88F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3A72159A1C8CE61D000FE88F /* QuantPricer */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3A72159C1C8CE61D000FE88F /* QuantPricer */ = {
+			isa = PBXGroup;
+			children = (
+				3A21E0611CE9C0E6008F150F /* VanillaOptionPricer.cpp */,
+				3A21E0621CE9C0E6008F150F /* VanillaOptionPricer.h */,
+				3AA94B3A1CDCED7C004D032A /* main.cpp */,
+				3AA94B3D1CE343D1004D032A /* TrinomialTree.cpp */,
+				3AA94B3E1CE343D1004D032A /* TrinomialTree.h */,
+				3A21E0581CE90124008F150F /* RecombiningTrinomialTree.cpp */,
+				3A21E0591CE90124008F150F /* RecombiningTrinomialTree.h */,
+				3A21E05B1CE9041D008F150F /* NonRecombiningTrinomialTree.cpp */,
+				3A21E05C1CE9041D008F150F /* NonRecombiningTrinomialTree.h */,
+				3A21E0641CE9DFBD008F150F /* AmericanOptionPricer.cpp */,
+				3A21E0651CE9DFBD008F150F /* AmericanOptionPricer.h */,
+			);
+			path = QuantPricer;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3A7215991C8CE61D000FE88F /* QuantPricer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A7215A11C8CE61D000FE88F /* Build configuration list for PBXNativeTarget "QuantPricer" */;
+			buildPhases = (
+				3A7215961C8CE61D000FE88F /* Sources */,
+				3A7215971C8CE61D000FE88F /* Frameworks */,
+				3A7215981C8CE61D000FE88F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QuantPricer;
+			productName = QuantPricer;
+			productReference = 3A72159A1C8CE61D000FE88F /* QuantPricer */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3A7215921C8CE61D000FE88F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = "Swati Mital";
+				TargetAttributes = {
+					3A7215991C8CE61D000FE88F = {
+						CreatedOnToolsVersion = 6.4;
+					};
+				};
+			};
+			buildConfigurationList = 3A7215951C8CE61D000FE88F /* Build configuration list for PBXProject "QuantPricer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 3A7215911C8CE61D000FE88F;
+			productRefGroup = 3A72159B1C8CE61D000FE88F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3A7215991C8CE61D000FE88F /* QuantPricer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3A7215961C8CE61D000FE88F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A21E0661CE9DFBD008F150F /* AmericanOptionPricer.cpp in Sources */,
+				3A21E0571CE8B24F008F150F /* TrinomialTreeTest.cpp in Sources */,
+				3A21E05A1CE90124008F150F /* RecombiningTrinomialTree.cpp in Sources */,
+				3AA94B3B1CDCED7C004D032A /* main.cpp in Sources */,
+				3A21E0631CE9C0E6008F150F /* VanillaOptionPricer.cpp in Sources */,
+				3AA94B3F1CE343D1004D032A /* TrinomialTree.cpp in Sources */,
+				3A21E05D1CE9041D008F150F /* NonRecombiningTrinomialTree.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		3A72159F1C8CE61D000FE88F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		3A7215A01C8CE61D000FE88F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		3A7215A21C8CE61D000FE88F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/Users/swatimital/boost_1_60_0/,
+				);
+				LIBRARY_SEARCH_PATHS = /Users/swatimital/boost_1_60_0/libs;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		3A7215A31C8CE61D000FE88F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/Users/swatimital/boost_1_60_0/,
+				);
+				LIBRARY_SEARCH_PATHS = /Users/swatimital/boost_1_60_0/libs;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3A7215951C8CE61D000FE88F /* Build configuration list for PBXProject "QuantPricer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A72159F1C8CE61D000FE88F /* Debug */,
+				3A7215A01C8CE61D000FE88F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3A7215A11C8CE61D000FE88F /* Build configuration list for PBXNativeTarget "QuantPricer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A7215A21C8CE61D000FE88F /* Debug */,
+				3A7215A31C8CE61D000FE88F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3A7215921C8CE61D000FE88F /* Project object */;
+}
