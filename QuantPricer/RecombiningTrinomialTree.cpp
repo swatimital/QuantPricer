@@ -11,8 +11,18 @@
 RecombiningTrinomialTree::RecombiningTrinomialTree(double S0, double sigma, double rf_rate, double dividend, double T, double steps)
 : TrinomialTree(S0, sigma, rf_rate, dividend, T, steps)
 {
-    m_root = BuildUnderlyingTree(S0, NodeDir::Middle, 0);
-    BreadthFirstTraversal(m_root);
+
+}
+
+void RecombiningTrinomialTree::InitializeTree()
+{
+    if (!m_initialized)
+    {
+        TrinomialTree::InitializeTree();
+        m_root = BuildUnderlyingTree(m_S0, NodeDir::Middle, 0);
+        BreadthFirstTraversal(m_root);
+        m_initialized = true;
+    }
 }
 
 
@@ -28,7 +38,7 @@ NodePtr RecombiningTrinomialTree::BuildUnderlyingTree(double val, NodeDir ndir, 
     } else if(ndir == NodeDir::Down) {
         nd = boost::make_shared<Node>(m_down_factor*val);
     } else {
-        nd = boost::make_shared<Node>(val);
+        nd = boost::make_shared<Node>(m_middle_factor*val);
     }
     
     if (tree_level == 0) {

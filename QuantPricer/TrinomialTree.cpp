@@ -12,16 +12,44 @@ TrinomialTree::TrinomialTree()
 {}
 
 TrinomialTree::TrinomialTree(double S0, double sigma, double rf_rate, double dividend, double T, double steps)
-:m_sigma(sigma), m_T(T), m_steps(steps), m_dividend(dividend), m_rf_rate(rf_rate)
+:m_S0(S0), m_sigma(sigma), m_T(T), m_steps(steps), m_dividend(dividend), m_rf_rate(rf_rate), m_initialized(false)
 {
     m_dt = m_T/m_steps;
-    m_up_factor = exp(sigma*sqrt(2.0*m_dt));
-    m_down_factor = 1/m_up_factor;
-    ComputeNodeProbabilities(m_up_prob, m_middle_prob, m_down_prob);
 }
 
 TrinomialTree::~TrinomialTree()
 {}
+
+void TrinomialTree::InitializeTree()
+{
+    if (!m_initialized)
+    {
+        ComputeAssetPriceFactors();
+        ComputeNodeProbabilities(m_up_prob, m_middle_prob, m_down_prob);
+    }
+}
+
+double TrinomialTree::GetRiskFreeRate()
+{
+    return m_rf_rate;
+}
+
+double TrinomialTree::GetLevel()
+{
+    return m_steps;
+}
+
+double TrinomialTree::GetMaturity()
+{
+    return m_T;
+}
+
+void TrinomialTree::ComputeAssetPriceFactors()
+{
+    m_up_factor = exp(m_sigma*sqrt(2.0*m_dt));
+    m_down_factor = 1/m_up_factor;
+    m_middle_factor = 1.0;
+}
 
 void TrinomialTree::ComputeNodeProbabilities(double& pu, double& pm, double& pd)
 {

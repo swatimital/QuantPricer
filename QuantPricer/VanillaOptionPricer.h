@@ -14,21 +14,19 @@
 #include "RecombiningTrinomialTree.h"
 #include <boost/make_shared.hpp>
 
-typedef boost::scoped_ptr<TrinomialTree> TreePtr;
+typedef boost::shared_ptr<RecombiningTrinomialTree> TreePtr;
 enum OptionType {Call, Put};
 
 class VanillaOptionPricer
 {
 public:
     VanillaOptionPricer(double sigma, double rf, double div, double T);
+    VanillaOptionPricer(TreePtr treeptr);
     ~VanillaOptionPricer();
     virtual double GetOptionPrice(double S0, double K, OptionType opt);
     
 protected:
     TreePtr m_treeptr;
-    double m_S0, m_K, m_sigma, m_rf, m_div, m_T;
-    double m_N;
-    double m_dt;
     
 };
 

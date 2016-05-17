@@ -16,6 +16,7 @@ class RecombiningTrinomialTree : public TrinomialTree
 {
 public:
     RecombiningTrinomialTree(double S0, double sigma, double rf, double dividend, double T, double steps=100.0);
+    virtual void InitializeTree();
     
 protected:
     virtual NodePtr BuildUnderlyingTree(double val, NodeDir ndir, int tree_level);

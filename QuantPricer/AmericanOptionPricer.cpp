@@ -13,11 +13,16 @@ VanillaOptionPricer(sigma, rf, div, T)
 {
 }
 
+AmericanOptionPricer::AmericanOptionPricer(TreePtr ptr) : VanillaOptionPricer(ptr)
+{
+}
 
 double AmericanOptionPricer::GetOptionPrice(double S0, double K, OptionType opt)
 {
     auto nodes = m_treeptr->GetBreadthFirstNodeValues();
-    auto n = m_N;
+    auto n = m_treeptr->GetLevel();
+    auto dt = m_treeptr->GetMaturity()/n;
+    auto rf = m_treeptr->GetRiskFreeRate();
     auto end = nodes.size();
     auto start = nodes.size() - (2*n+1);
     double up_prob, mid_prob, down_prob;
@@ -43,7 +48,7 @@ double AmericanOptionPricer::GetOptionPrice(double S0, double K, OptionType opt)
         for (auto i = start; i < end; i++,j++)
         {
             
-            std::get<1>(nodes[i]->values) = std::max(1.0, exp(-m_rf*m_dt)*(up_prob*std::get<1>(nodes[j]->values) +
+            std::get<1>(nodes[i]->values) = std::max(1.0, exp(-rf*dt)*(up_prob*std::get<1>(nodes[j]->values) +
                                                              mid_prob*std::get<1>(nodes[j+1]->values) +
                                                              down_prob*std::get<1>(nodes[j+2]->values)));
         }

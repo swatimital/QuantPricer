@@ -8,10 +8,14 @@
 
 #include "VanillaOptionPricer.h"
 
-VanillaOptionPricer::VanillaOptionPricer(double sigma, double rf, double div, double T) : m_sigma(sigma), m_rf(rf), m_div(div), m_T(T), m_N(100.0),
-    m_treeptr(new RecombiningTrinomialTree(1.0, sigma, rf, div, T, 100.0)),
-    m_dt(T/m_N)
+VanillaOptionPricer::VanillaOptionPricer(double sigma, double rf, double div, double T) :   
+m_treeptr(boost::make_shared<RecombiningTrinomialTree>(RecombiningTrinomialTree(1.0, sigma, rf, div, T, 100.0)))
 {
+}
+
+VanillaOptionPricer::VanillaOptionPricer(TreePtr treePtr) : m_treeptr(treePtr)
+{
+    
 }
 
 VanillaOptionPricer::~VanillaOptionPricer()
@@ -19,8 +23,11 @@ VanillaOptionPricer::~VanillaOptionPricer()
 
 double VanillaOptionPricer::GetOptionPrice(double S0, double K, OptionType opt)
 {
+    m_treeptr->InitializeTree();
     auto nodes = m_treeptr->GetBreadthFirstNodeValues();
-    auto n = m_N;
+    auto n = m_treeptr->GetLevel();
+    auto dt = m_treeptr->GetMaturity()/n;
+    auto rf = m_treeptr->GetRiskFreeRate();
     auto end = nodes.size();
     auto start = nodes.size() - (2*n+1);
     double up_prob, mid_prob, down_prob;
@@ -46,7 +53,7 @@ double VanillaOptionPricer::GetOptionPrice(double S0, double K, OptionType opt)
         for (auto i = start; i < end; i++,j++)
         {
             
-            std::get<1>(nodes[i]->values) = exp(-m_rf*m_dt)*(up_prob*std::get<1>(nodes[j]->values) +
+            std::get<1>(nodes[i]->values) = exp(-rf*dt)*(up_prob*std::get<1>(nodes[j]->values) +
                                                              mid_prob*std::get<1>(nodes[j+1]->values) +
                                                              down_prob*std::get<1>(nodes[j+2]->values));
         }

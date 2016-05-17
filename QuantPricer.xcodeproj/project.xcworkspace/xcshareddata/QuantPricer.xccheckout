@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B11DE285-3A0C-437E-8AF4-EFCA50A8B731</string>
+	<key>IDESourceControlProjectName</key>
+	<string>QuantPricer</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>07804D6A93165146F07C91C52E3C73F454A8F276</key>
+		<string>https://github.com/swatimital/QuantPricer.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>QuantPricer.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>07804D6A93165146F07C91C52E3C73F454A8F276</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/swatimital/QuantPricer.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>07804D6A93165146F07C91C52E3C73F454A8F276</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>07804D6A93165146F07C91C52E3C73F454A8F276</string>
+			<key>IDESourceControlWCCName</key>
+			<string>QuantPricer</string>
+		</dict>
+	</array>
+</dict>
+</plist>

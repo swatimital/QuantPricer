@@ -37,6 +37,10 @@ class TrinomialTree
 public:
     TrinomialTree();
     TrinomialTree(double S0, double sigma, double rf, double dividend, double T, double steps);
+    virtual void InitializeTree();
+    virtual double GetLevel();
+    virtual double GetMaturity();
+    virtual double GetRiskFreeRate();
     std::vector<NodePtr> GetBreadthFirstNodeValues() const;
     virtual void ComputeNodeProbabilities(double& pu, double& pm, double& pd);
     virtual ~TrinomialTree();
@@ -44,8 +48,9 @@ public:
 protected:
     virtual void BreadthFirstTraversal(NodePtr nd);
     virtual NodePtr BuildUnderlyingTree(double val, NodeDir ndir, int tree_level) = 0;
-    
+    virtual void ComputeAssetPriceFactors();
 protected:
+    double m_S0;
     double m_sigma;
     double m_rf_rate;
     double m_dividend;
@@ -54,9 +59,11 @@ protected:
     double m_dt;
     double m_up_factor;
     double m_down_factor;
+    double m_middle_factor;
     double m_up_prob, m_middle_prob, m_down_prob;
     NodePtr m_root;
     std::vector<NodePtr> m_bf_nodes;
+    bool m_initialized;
     
 };
 

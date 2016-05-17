@@ -28,7 +28,7 @@ NodePtr NonRecombiningTrinomialTree::BuildUnderlyingTree(double val, NodeDir ndi
     } else if(ndir == NodeDir::Down) {
         nd = boost::make_shared<Node>(m_down_factor*val);
     } else {
-        nd = boost::make_shared<Node>(val);
+        nd = boost::make_shared<Node>(m_middle_factor*val);
     }
     
     
