@@ -1,4 +1,6 @@
-//
+^{
+    <#code#>
+}//
 //  TrinomialTree.cpp
 //  QuantPricer
 //
@@ -8,19 +10,24 @@
 
 #include "TrinomialTree.h"
 
-TrinomialTree::TrinomialTree()
+template<class Underlying, class Derivative>
+TrinomialTree<Underlying, Derivative>::TrinomialTree()
 {}
 
-TrinomialTree::TrinomialTree(double S0, double sigma, double rf_rate, double dividend, double T, double steps)
+template<class Underlying, class Derivative>
+TrinomialTree<Underlying, Derivative>::TrinomialTree(double S0, double sigma, double rf_rate, double dividend, double T, double steps)
 :m_S0(S0), m_sigma(sigma), m_T(T), m_steps(steps), m_dividend(dividend), m_rf_rate(rf_rate), m_initialized(false)
 {
     m_dt = m_T/m_steps;
 }
 
-TrinomialTree::~TrinomialTree()
+template<class Underlying, class Derivative>
+TrinomialTree<Underlying, Derivative>::~TrinomialTree()
 {}
 
-void TrinomialTree::InitializeTree()
+
+template<class Underlying, class Derivative>
+void TrinomialTree<Underlying, Derivative>::InitializeTree()
 {
     if (!m_initialized)
     {
@@ -29,29 +36,39 @@ void TrinomialTree::InitializeTree()
     }
 }
 
-double TrinomialTree::GetRiskFreeRate()
+
+template<class Underlying, class Derivative>
+double TrinomialTree<Underlying, Derivative>::GetRiskFreeRate()
 {
     return m_rf_rate;
 }
 
-double TrinomialTree::GetLevel()
+
+template<class Underlying, class Derivative>
+double TrinomialTree<Underlying, Derivative>::GetLevel()
 {
     return m_steps;
 }
 
-double TrinomialTree::GetMaturity()
+
+template<class Underlying, class Derivative>
+double TrinomialTree<Underlying, Derivative>::GetMaturity()
 {
     return m_T;
 }
 
-void TrinomialTree::ComputeAssetPriceFactors()
+
+template<class Underlying, class Derivative>
+void TrinomialTree<Underlying, Derivative>::ComputeAssetPriceFactors()
 {
     m_up_factor = exp(m_sigma*sqrt(2.0*m_dt));
     m_down_factor = 1/m_up_factor;
     m_middle_factor = 1.0;
 }
 
-void TrinomialTree::ComputeNodeProbabilities(double& pu, double& pm, double& pd)
+
+template<class Underlying, class Derivative>
+void TrinomialTree<Underlying, Derivative>::ComputeNodeProbabilities(double& pu, double& pm, double& pd)
 {
     double r_factor = exp((m_rf_rate-m_dividend)*m_dt*0.5);
     double pu_factor = exp(m_sigma*sqrt(0.5*m_dt));
@@ -64,19 +81,22 @@ void TrinomialTree::ComputeNodeProbabilities(double& pu, double& pm, double& pd)
 }
 
 
-std::vector<NodePtr> TrinomialTree::GetBreadthFirstNodeValues() const
+template<class Underlying, class Derivative>
+std::vector<boost::shared_ptr<Node<Underlying, Derivative>>> TrinomialTree<Underlying, Derivative>::GetBreadthFirstNodeValues() const
 {
     return m_bf_nodes;
 }
 
-void TrinomialTree::BreadthFirstTraversal(NodePtr nd)
+
+template<class Underlying, class Derivative>
+void TrinomialTree<Underlying, Derivative>::BreadthFirstTraversal(boost::shared_ptr<Node<Underlying, Derivative>> nd)
 {
-    std::queue<NodePtr> nodes;
+    std::queue<boost::shared_ptr<Node<Underlying, Derivative>>> nodes;
     nodes.push(nd);
     
     while (!nodes.empty())
     {
-        NodePtr n = nodes.front();
+        boost::shared_ptr<Node<Underlying, Derivative>> n = nodes.front();
         nodes.pop();
         m_bf_nodes.push_back(n);
         if (n->up != nullptr)
@@ -89,5 +109,7 @@ void TrinomialTree::BreadthFirstTraversal(NodePtr nd)
     }
     
 }
+
+
 
 

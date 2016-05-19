@@ -12,10 +12,9 @@
 		3A21E05D1CE9041D008F150F /* NonRecombiningTrinomialTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E05B1CE9041D008F150F /* NonRecombiningTrinomialTree.cpp */; };
 		3A21E0631CE9C0E6008F150F /* VanillaOptionPricer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E0611CE9C0E6008F150F /* VanillaOptionPricer.cpp */; };
 		3A21E0661CE9DFBD008F150F /* AmericanOptionPricer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E0641CE9DFBD008F150F /* AmericanOptionPricer.cpp */; };
-		3A21E0691CE9F97D008F150F /* BarenblattTrinomialTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E0671CE9F97D008F150F /* BarenblattTrinomialTree.cpp */; };
-		3A21E06C1CEBA811008F150F /* BarenblattDerivativePricer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E06A1CEBA811008F150F /* BarenblattDerivativePricer.cpp */; };
+		3A21E0791CED7F58008F150F /* BarenblattTrinomialTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E0771CED7F58008F150F /* BarenblattTrinomialTree.cpp */; };
+		3A21E07B1CED7F65008F150F /* BarenblattDerivativePricer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E07A1CED7F65008F150F /* BarenblattDerivativePricer.cpp */; };
 		3AA94B3B1CDCED7C004D032A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AA94B3A1CDCED7C004D032A /* main.cpp */; };
-		3AA94B3F1CE343D1004D032A /* TrinomialTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AA94B3D1CE343D1004D032A /* TrinomialTree.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,13 +40,13 @@
 		3A21E0621CE9C0E6008F150F /* VanillaOptionPricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VanillaOptionPricer.h; sourceTree = "<group>"; };
 		3A21E0641CE9DFBD008F150F /* AmericanOptionPricer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AmericanOptionPricer.cpp; sourceTree = "<group>"; };
 		3A21E0651CE9DFBD008F150F /* AmericanOptionPricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmericanOptionPricer.h; sourceTree = "<group>"; };
-		3A21E0671CE9F97D008F150F /* BarenblattTrinomialTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BarenblattTrinomialTree.cpp; sourceTree = "<group>"; };
-		3A21E0681CE9F97D008F150F /* BarenblattTrinomialTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarenblattTrinomialTree.h; sourceTree = "<group>"; };
-		3A21E06A1CEBA811008F150F /* BarenblattDerivativePricer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BarenblattDerivativePricer.cpp; sourceTree = "<group>"; };
-		3A21E06B1CEBA811008F150F /* BarenblattDerivativePricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarenblattDerivativePricer.h; sourceTree = "<group>"; };
+		3A21E06E1CEC2A3E008F150F /* OptionPricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionPricer.h; sourceTree = "<group>"; };
+		3A21E0761CED7F58008F150F /* BarenblattDerivativePricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarenblattDerivativePricer.h; sourceTree = "<group>"; };
+		3A21E0771CED7F58008F150F /* BarenblattTrinomialTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BarenblattTrinomialTree.cpp; sourceTree = "<group>"; };
+		3A21E0781CED7F58008F150F /* BarenblattTrinomialTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarenblattTrinomialTree.h; sourceTree = "<group>"; };
+		3A21E07A1CED7F65008F150F /* BarenblattDerivativePricer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BarenblattDerivativePricer.cpp; sourceTree = "<group>"; };
 		3A72159A1C8CE61D000FE88F /* QuantPricer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = QuantPricer; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AA94B3A1CDCED7C004D032A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		3AA94B3D1CE343D1004D032A /* TrinomialTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrinomialTree.cpp; sourceTree = "<group>"; };
 		3AA94B3E1CE343D1004D032A /* TrinomialTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrinomialTree.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,10 +90,13 @@
 		3A72159C1C8CE61D000FE88F /* QuantPricer */ = {
 			isa = PBXGroup;
 			children = (
+				3A21E07A1CED7F65008F150F /* BarenblattDerivativePricer.cpp */,
+				3A21E0761CED7F58008F150F /* BarenblattDerivativePricer.h */,
+				3A21E0771CED7F58008F150F /* BarenblattTrinomialTree.cpp */,
+				3A21E0781CED7F58008F150F /* BarenblattTrinomialTree.h */,
 				3A21E0611CE9C0E6008F150F /* VanillaOptionPricer.cpp */,
 				3A21E0621CE9C0E6008F150F /* VanillaOptionPricer.h */,
 				3AA94B3A1CDCED7C004D032A /* main.cpp */,
-				3AA94B3D1CE343D1004D032A /* TrinomialTree.cpp */,
 				3AA94B3E1CE343D1004D032A /* TrinomialTree.h */,
 				3A21E0581CE90124008F150F /* RecombiningTrinomialTree.cpp */,
 				3A21E0591CE90124008F150F /* RecombiningTrinomialTree.h */,
@@ -102,10 +104,7 @@
 				3A21E05C1CE9041D008F150F /* NonRecombiningTrinomialTree.h */,
 				3A21E0641CE9DFBD008F150F /* AmericanOptionPricer.cpp */,
 				3A21E0651CE9DFBD008F150F /* AmericanOptionPricer.h */,
-				3A21E0671CE9F97D008F150F /* BarenblattTrinomialTree.cpp */,
-				3A21E0681CE9F97D008F150F /* BarenblattTrinomialTree.h */,
-				3A21E06A1CEBA811008F150F /* BarenblattDerivativePricer.cpp */,
-				3A21E06B1CEBA811008F150F /* BarenblattDerivativePricer.h */,
+				3A21E06E1CEC2A3E008F150F /* OptionPricer.h */,
 			);
 			path = QuantPricer;
 			sourceTree = "<group>";
@@ -167,14 +166,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A21E0661CE9DFBD008F150F /* AmericanOptionPricer.cpp in Sources */,
+				3A21E07B1CED7F65008F150F /* BarenblattDerivativePricer.cpp in Sources */,
 				3A21E0571CE8B24F008F150F /* TrinomialTreeTest.cpp in Sources */,
-				3A21E0691CE9F97D008F150F /* BarenblattTrinomialTree.cpp in Sources */,
 				3A21E05A1CE90124008F150F /* RecombiningTrinomialTree.cpp in Sources */,
 				3AA94B3B1CDCED7C004D032A /* main.cpp in Sources */,
 				3A21E0631CE9C0E6008F150F /* VanillaOptionPricer.cpp in Sources */,
-				3AA94B3F1CE343D1004D032A /* TrinomialTree.cpp in Sources */,
-				3A21E06C1CEBA811008F150F /* BarenblattDerivativePricer.cpp in Sources */,
 				3A21E05D1CE9041D008F150F /* NonRecombiningTrinomialTree.cpp in Sources */,
+				3A21E0791CED7F58008F150F /* BarenblattTrinomialTree.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

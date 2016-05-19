@@ -13,6 +13,9 @@
 #include <iostream>
 #include <fstream>
 #include "VanillaOptionPricer.h"
+#include "RecombiningTrinomialTree.h"
+#include "BarenblattTrinomialTree.h"
+#include "BarenblattDerivativePricer.h"
 
 int main(int argc, const char * argv[])
 {
@@ -23,11 +26,12 @@ int main(int argc, const char * argv[])
     double sigma_min = 0.1;
     double sigma_mid = 0.5*(sigma_max + sigma_min);
     double T = 0.5;
+    double div = 0.0;
     double rf = 0.1;
     
-    boost::shared_ptr<RecombiningTrinomialTree> tree_sigma_max = boost::make_shared<RecombiningTrinomialTree>(1.0, sigma_max, rf, 0.0, T);
-    boost::shared_ptr<RecombiningTrinomialTree> tree_sigma_min = boost::make_shared<RecombiningTrinomialTree>(1.0, sigma_min, rf, 0.0, T);
-    boost::shared_ptr<RecombiningTrinomialTree> tree_sigma_mid = boost::make_shared<RecombiningTrinomialTree>(1.0, sigma_mid, rf, 0.0, T);
+    boost::shared_ptr<RecombiningTrinomialTree> tree_sigma_max = boost::make_shared<RecombiningTrinomialTree>(1.0, sigma_max, rf, div, T);
+    boost::shared_ptr<RecombiningTrinomialTree> tree_sigma_min = boost::make_shared<RecombiningTrinomialTree>(1.0, sigma_min, rf, div, T);
+    boost::shared_ptr<RecombiningTrinomialTree> tree_sigma_mid = boost::make_shared<RecombiningTrinomialTree>(1.0, sigma_mid, rf, div, T);
     
     tree_sigma_max->InitializeTree();
     tree_sigma_min->InitializeTree();
@@ -50,17 +54,26 @@ int main(int argc, const char * argv[])
     
     for (auto S = 0; S < stock_prices.size(); S++)
     {
-        double price_1 = option_pricer_max.GetOptionPrice(stock_prices[S], K_low, OptionType::Call);
-        double price_2 = option_pricer_min.GetOptionPrice(stock_prices[S], K_high, OptionType::Call);
+        double price_1 = option_pricer_max.GetPrice(stock_prices[S], K_low, OptionType::Call);
+        double price_2 = option_pricer_min.GetPrice(stock_prices[S], K_high, OptionType::Call);
         
-        double price_3 = option_pricer_min.GetOptionPrice(stock_prices[S], K_low, OptionType::Call);
-        double price_4 = option_pricer_max.GetOptionPrice(stock_prices[S], K_high, OptionType::Call);
+        double price_3 = option_pricer_min.GetPrice(stock_prices[S], K_low, OptionType::Call);
+        double price_4 = option_pricer_max.GetPrice(stock_prices[S], K_high, OptionType::Call);
         
-        double price_5 = option_pricer_mid.GetOptionPrice(stock_prices[S], K_low, OptionType::Call);
-        double price_6 = option_pricer_mid.GetOptionPrice(stock_prices[S], K_high, OptionType::Call);
+        double price_5 = option_pricer_mid.GetPrice(stock_prices[S], K_low, OptionType::Call);
+        double price_6 = option_pricer_mid.GetPrice(stock_prices[S], K_high, OptionType::Call);
         
         myfile << stock_prices[S] << "," << price_1-price_2 << "," << price_3-price_4 << "," << price_5-price_6 << ",\n";
     }
+    
+    
+    boost::shared_ptr<BarenblattTrinomialTree> bsb_tree = boost::make_shared<BarenblattTrinomialTree>(1.0, sigma_max, sigma_min, rf, div, T, 100.0);
+    bsb_tree->InitializeTree();
+    
+    BarenblattDerivativePricer bsb_pricer(bsb_tree);
+    
+    //Needs testing
+    bsb_pricer.GetPrice(stock_prices[1], K_low, OptionType::Call);
     
     myfile.close();
 }

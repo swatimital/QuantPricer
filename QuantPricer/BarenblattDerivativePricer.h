@@ -11,4 +11,15 @@
 
 #include <stdio.h>
 
+#include "OptionPricer.h"
+
+class BarenblattDerivativePricer : public OptionPricer<double, std::tuple<double, double>>
+{
+public:
+    BarenblattDerivativePricer(double sigma_max, double sigma_min, double rf, double div, double T);
+    BarenblattDerivativePricer(TreePtr ptr);
+    
+    virtual std::tuple<double, double> GetPrice(double S0, double K, OptionType opt);
+};
+
 #endif /* defined(__QuantPricer__BarenblattDerivativePricer__) */

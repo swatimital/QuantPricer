@@ -12,13 +12,13 @@
 #include <stdio.h>
 #include "TrinomialTree.h"
 
-class NonRecombiningTrinomialTree : public TrinomialTree
+class NonRecombiningTrinomialTree : public TrinomialTree<double, double>
 {
 public:
     NonRecombiningTrinomialTree(double S0, double sigma, double rf, double dividend, double T, double steps=100.0);
     
 protected:
-    virtual NodePtr BuildUnderlyingTree(double val, NodeDir ndir, int tree_level);
+    virtual boost::shared_ptr<Node<double, double>> BuildUnderlyingTree(double val, NodeDir ndir, int tree_level);
     
     
 };

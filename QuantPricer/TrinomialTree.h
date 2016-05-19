@@ -19,36 +19,105 @@
 
 enum NodeDir {Up, Middle, Down};
 
+template<typename Underlying, typename Derivative>
 struct Node
 {
-    std::tuple<double, double> values;
+    std::tuple<Underlying, Derivative> values;
     boost::shared_ptr<Node> up;
     boost::shared_ptr<Node> middle;
     boost::shared_ptr<Node> down;
     
     Node(){}
-    Node(double underlying, double derivative=-1.0):values(std::make_tuple(underlying, derivative)){}
+    Node(Underlying underlying, Derivative derivative):values(std::make_tuple(underlying, derivative)){}
 };
 
-typedef boost::shared_ptr<Node> NodePtr;
-
+template<typename Underlying, typename Derivative>
 class TrinomialTree
 {
 public:
-    TrinomialTree();
-    TrinomialTree(double S0, double sigma, double rf, double dividend, double T, double steps);
-    virtual void InitializeTree();
-    virtual double GetLevel();
-    virtual double GetMaturity();
-    virtual double GetRiskFreeRate();
-    std::vector<NodePtr> GetBreadthFirstNodeValues() const;
-    virtual void ComputeNodeProbabilities(double& pu, double& pm, double& pd);
-    virtual ~TrinomialTree();
+    TrinomialTree()
+    {}
+    
+    TrinomialTree(double S0, double sigma, double rf, double dividend, double T, double steps)
+    :m_S0(S0), m_sigma(sigma), m_T(T), m_steps(steps), m_dividend(dividend), m_rf_rate(rf), m_initialized(false)
+    {
+        m_dt = m_T/m_steps;
+    }
+    
+    
+    virtual void InitializeTree()
+    {
+        if (!m_initialized)
+        {
+            ComputeAssetPriceFactors();
+            ComputeNodeProbabilities(m_up_prob, m_middle_prob, m_down_prob);
+        }
+    }
+    
+    virtual double GetLevel()
+    {
+        return m_steps;
+    }
+    
+    virtual double GetMaturity()
+    {
+        return m_T;
+    }
+
+    virtual double GetRiskFreeRate()
+    {
+        return m_rf_rate;
+    }
+    
+    std::vector<boost::shared_ptr<Node<Underlying, Derivative>>> GetBreadthFirstNodeValues() const
+    {
+        return m_bf_nodes;
+    }
+    
+    virtual void ComputeNodeProbabilities(double& pu, double& pm, double& pd)
+    {
+        double r_factor = exp((m_rf_rate-m_dividend)*m_dt*0.5);
+        double pu_factor = exp(m_sigma*sqrt(0.5*m_dt));
+        double pd_factor = 1/pu_factor;
+        pu = (r_factor-pd_factor)/(pu_factor-pd_factor);
+        pu *= pu;
+        pd = (pu_factor-r_factor)/(pu_factor-pd_factor);
+        pd *= pd;
+        pm = 1 - (pu+pd);
+    }
+    
+    virtual ~TrinomialTree() {}
     
 protected:
-    virtual void BreadthFirstTraversal(NodePtr nd);
-    virtual NodePtr BuildUnderlyingTree(double val, NodeDir ndir, int tree_level) = 0;
-    virtual void ComputeAssetPriceFactors();
+    virtual void BreadthFirstTraversal(boost::shared_ptr<Node<Underlying, Derivative>> nd)
+    {
+        std::queue<boost::shared_ptr<Node<Underlying, Derivative>>> nodes;
+        nodes.push(nd);
+        
+        while (!nodes.empty())
+        {
+            boost::shared_ptr<Node<Underlying, Derivative>> n = nodes.front();
+            nodes.pop();
+            m_bf_nodes.push_back(n);
+            if (n->up != nullptr)
+                nodes.push(n->up);
+            if (n->middle != nullptr)
+                nodes.push(n->middle);
+            if (n->down != nullptr)
+                nodes.push(n->down);
+            
+        }
+        
+    }
+
+    virtual boost::shared_ptr<Node<Underlying, Derivative>> BuildUnderlyingTree(double val, NodeDir ndir, int tree_level) = 0;
+    virtual void ComputeAssetPriceFactors()
+    {
+        m_up_factor = exp(m_sigma*sqrt(2.0*m_dt));
+        m_down_factor = 1/m_up_factor;
+        m_middle_factor = 1.0;
+    }
+
 protected:
     double m_S0;
     double m_sigma;
@@ -61,8 +130,8 @@ protected:
     double m_down_factor;
     double m_middle_factor;
     double m_up_prob, m_middle_prob, m_down_prob;
-    NodePtr m_root;
-    std::vector<NodePtr> m_bf_nodes;
+    boost::shared_ptr<Node<Underlying, Derivative>> m_root;
+    std::vector<boost::shared_ptr<Node<Underlying, Derivative>>> m_bf_nodes;
     bool m_initialized;
     
 };

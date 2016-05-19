@@ -7,21 +7,22 @@
 //
 
 #include "VanillaOptionPricer.h"
+#include "RecombiningTrinomialTree.h"
 
-VanillaOptionPricer::VanillaOptionPricer(double sigma, double rf, double div, double T) :   
-m_treeptr(boost::make_shared<RecombiningTrinomialTree>(RecombiningTrinomialTree(1.0, sigma, rf, div, T, 100.0)))
+VanillaOptionPricer::VanillaOptionPricer(double sigma, double rf, double div, double T) 
 {
+    m_treeptr = boost::make_shared<RecombiningTrinomialTree>(RecombiningTrinomialTree(1.0, sigma, rf, div, T, 100.0));
 }
 
-VanillaOptionPricer::VanillaOptionPricer(TreePtr treePtr) : m_treeptr(treePtr)
+VanillaOptionPricer::VanillaOptionPricer(TreePtr treePtr)
 {
-    
+    m_treeptr = treePtr;
 }
 
 VanillaOptionPricer::~VanillaOptionPricer()
 {}
 
-double VanillaOptionPricer::GetOptionPrice(double S0, double K, OptionType opt)
+double VanillaOptionPricer::GetPrice(double S0, double K, OptionType opt)
 {
     m_treeptr->InitializeTree();
     auto nodes = m_treeptr->GetBreadthFirstNodeValues();

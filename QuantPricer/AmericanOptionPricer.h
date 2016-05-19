@@ -18,7 +18,7 @@ public:
     AmericanOptionPricer(double sigma, double rf, double div, double T);
     AmericanOptionPricer(TreePtr);
     ~AmericanOptionPricer();
-    virtual double GetOptionPrice(double S0, double K, OptionType opt);
+    virtual double GetPrice(double S0, double K, OptionType opt);
     
 };
 

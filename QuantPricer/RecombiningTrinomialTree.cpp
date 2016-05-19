@@ -26,19 +26,19 @@ void RecombiningTrinomialTree::InitializeTree()
 }
 
 
-NodePtr RecombiningTrinomialTree::BuildUnderlyingTree(double val, NodeDir ndir, int tree_level)
+boost::shared_ptr<Node<double, double>> RecombiningTrinomialTree::BuildUnderlyingTree(double val, NodeDir ndir, int tree_level)
 {
-    NodePtr nd;
+    boost::shared_ptr<Node<double, double>> nd;
     
     if (tree_level > m_steps)
         return nullptr;
     
     if (ndir == NodeDir::Up) {
-        nd = boost::make_shared<Node>(m_up_factor*val);
+        nd = boost::make_shared<Node<double, double>>(m_up_factor*val, -1.0);
     } else if(ndir == NodeDir::Down) {
-        nd = boost::make_shared<Node>(m_down_factor*val);
+        nd = boost::make_shared<Node<double, double>>(m_down_factor*val, -1.0);
     } else {
-        nd = boost::make_shared<Node>(m_middle_factor*val);
+        nd = boost::make_shared<Node<double, double>>(m_middle_factor*val, -1.0);
     }
     
     if (tree_level == 0) {

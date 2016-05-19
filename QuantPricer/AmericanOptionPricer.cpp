@@ -17,7 +17,10 @@ AmericanOptionPricer::AmericanOptionPricer(TreePtr ptr) : VanillaOptionPricer(pt
 {
 }
 
-double AmericanOptionPricer::GetOptionPrice(double S0, double K, OptionType opt)
+AmericanOptionPricer::~AmericanOptionPricer()
+{}
+
+double AmericanOptionPricer::GetPrice(double S0, double K, OptionType opt)
 {
     auto nodes = m_treeptr->GetBreadthFirstNodeValues();
     auto n = m_treeptr->GetLevel();
