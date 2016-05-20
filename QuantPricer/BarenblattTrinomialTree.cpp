@@ -17,18 +17,17 @@ void BarenblattTrinomialTree::InitializeTree()
     if (!m_initialized)
     {
         ComputeAssetPriceFactors();
-        ComputeNodeProbabilities(m_up_prob, m_middle_prob, m_down_prob);
+        m_root = BuildUnderlyingTree(m_S0, NodeDir::Middle, 0);
+        BreadthFirstTraversal(m_root);
         m_initialized = true;
     }
 }
 
 void BarenblattTrinomialTree::ComputeAssetPriceFactors()
 {
-    m_up_factor = exp(m_sigma_max*sqrt(m_dt)+m_dt);
+    m_up_factor = exp(m_sigma_max*sqrt(m_dt)+m_rf_rate*m_dt);
     m_middle_factor = exp(m_rf_rate*m_dt);
-    m_root = BuildUnderlyingTree(m_S0, NodeDir::Middle, 0);
-    BreadthFirstTraversal(m_root);
-    m_down_factor = 1/m_up_factor;
+    m_down_factor = exp(-m_sigma_max*sqrt(m_dt)+m_rf_rate*m_dt) ;
 }
 
 double BarenblattTrinomialTree::GetSigmaMax() const { return m_sigma_max; }

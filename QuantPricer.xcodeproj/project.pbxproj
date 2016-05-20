@@ -45,6 +45,7 @@
 		3A21E0771CED7F58008F150F /* BarenblattTrinomialTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BarenblattTrinomialTree.cpp; sourceTree = "<group>"; };
 		3A21E0781CED7F58008F150F /* BarenblattTrinomialTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarenblattTrinomialTree.h; sourceTree = "<group>"; };
 		3A21E07A1CED7F65008F150F /* BarenblattDerivativePricer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BarenblattDerivativePricer.cpp; sourceTree = "<group>"; };
+		3A21E07F1CEE448F008F150F /* BlackScholesOptionPricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlackScholesOptionPricer.h; sourceTree = "<group>"; };
 		3A72159A1C8CE61D000FE88F /* QuantPricer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = QuantPricer; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AA94B3A1CDCED7C004D032A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		3AA94B3E1CE343D1004D032A /* TrinomialTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrinomialTree.h; sourceTree = "<group>"; };
@@ -105,6 +106,7 @@
 				3A21E0641CE9DFBD008F150F /* AmericanOptionPricer.cpp */,
 				3A21E0651CE9DFBD008F150F /* AmericanOptionPricer.h */,
 				3A21E06E1CEC2A3E008F150F /* OptionPricer.h */,
+				3A21E07F1CEE448F008F150F /* BlackScholesOptionPricer.h */,
 			);
 			path = QuantPricer;
 			sourceTree = "<group>";

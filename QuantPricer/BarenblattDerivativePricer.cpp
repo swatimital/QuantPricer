@@ -38,7 +38,7 @@ std::tuple<double, double> BarenblattDerivativePricer::GetPrice(double S0, doubl
     // Set the option values on the leaf nodes
     for (auto i = start; i < end; i++)
     {
-        std::tuple<double, double> option_bounds = std::get<1>(nodes[i]->values);
+        std::tuple<double, double>& option_bounds = std::get<1>(nodes[i]->values);
         if(opt == OptionType::Call)
         {
             std::get<0>(option_bounds) = (std::get<0>(nodes[i]->values)*S0 - K) >= 0 ? std::get<0>(nodes[i]->values)*S0 - K : 0;
@@ -57,32 +57,19 @@ std::tuple<double, double> BarenblattDerivativePricer::GetPrice(double S0, doubl
         auto j = end;
         for (auto i = start; i < end; i++,j++)
         {
-            std::tuple<double, double> option_bounds = std::get<1>(nodes[i]->values);
+            std::tuple<double, double>& option_bounds = std::get<1>(nodes[i]->values);
             std::tuple<double, double> next_up = std::get<1>(nodes[j]->values);
             std::tuple<double, double> next_mid = std::get<1>(nodes[j+1]->values);
             std::tuple<double, double> next_down = std::get<1>(nodes[j+2]->values);
             
-            auto gamma0 = (1 - (sigma_max*sqrt(dt)*0.5)) * std::get<0>(next_up) + (1 + (sigma_max*sqrt(dt)*0.5)) * std::get<0>(next_down) - std::get<0>(next_mid);
+            auto gamma0 = (1 - (sigma_max*sqrt(dt)*0.5)) * std::get<0>(next_up) + (1 + (sigma_max*sqrt(dt)*0.5)) * std::get<0>(next_down) - 2.0*std::get<0>(next_mid);
             
-            auto gamma1 = (1 - (sigma_max*sqrt(dt)*0.5)) * std::get<1>(next_up) + (1 + (sigma_max*sqrt(dt)*0.5)) * std::get<1>(next_down) - std::get<1>(next_mid);
+            auto gamma1 = (1 - (sigma_max*sqrt(dt)*0.5)) * std::get<1>(next_up) + (1 + (sigma_max*sqrt(dt)*0.5)) * std::get<1>(next_down) - 2.0*std::get<1>(next_mid);
             
-            if (gamma0 >= 0)
-            {
-                std::get<0>(option_bounds) = exp(-rf*dt)*(std::get<0>(next_mid) + 0.5*gamma0);
-            }
-            else
-            {
-                std::get<0>(option_bounds) = exp(-rf*dt)*(std::get<0>(next_mid) + (sigma_min*sigma_min/(2*sigma_max*sigma_max))*gamma0);
-            }
-            
-            if (gamma1 < 0)
-            {
-                std::get<1>(option_bounds) = exp(-rf*dt)*(std::get<1>(next_mid) + 0.5*gamma1);
-            }
-            else
-            {
-                std::get<1>(option_bounds) = exp(-rf*dt)*(std::get<1>(next_mid) + (sigma_min*sigma_min/(2*sigma_max*sigma_max))*gamma1);
-            }
+            std::get<0>(option_bounds) = (gamma0 >= 0) ? exp(-rf*dt)*(std::get<0>(next_mid) + 0.5*gamma0) :
+                exp(-rf*dt)*(std::get<0>(next_mid) + (sigma_min*sigma_min/(2*sigma_max*sigma_max))*gamma0);
+           
+            std::get<1>(option_bounds) = (gamma1 < 0) ? exp(-rf*dt)*(std::get<1>(next_mid) + 0.5*gamma1) :exp(-rf*dt)*(std::get<1>(next_mid) + (sigma_min*sigma_min/(2*sigma_max*sigma_max))*gamma1);
         }
     }
     

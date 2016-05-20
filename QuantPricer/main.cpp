@@ -16,11 +16,12 @@
 #include "RecombiningTrinomialTree.h"
 #include "BarenblattTrinomialTree.h"
 #include "BarenblattDerivativePricer.h"
+#include "BlackScholesOptionPricer.h"
 
 int main(int argc, const char * argv[])
 {
     std::ofstream myfile;
-    myfile.open("CallPriceBounds.csv");
+    myfile.open("/Users/swatimital/GitHub/QuantPricer/Results/CallPriceBounds.csv");
     
     double sigma_max = 0.4;
     double sigma_min = 0.1;
@@ -40,9 +41,14 @@ int main(int argc, const char * argv[])
     VanillaOptionPricer option_pricer_min(tree_sigma_min);
     VanillaOptionPricer option_pricer_mid(tree_sigma_mid);
     
+    boost::shared_ptr<BarenblattTrinomialTree> bsb_tree = boost::make_shared<BarenblattTrinomialTree>(1.0, sigma_max, sigma_min, rf, div, T, 100.0);
+    bsb_tree->InitializeTree();
+    
+    BarenblattDerivativePricer bsb_pricer(bsb_tree);
+    
     int num_stocks = 200/5;
     std::vector<double> stock_prices;
-    stock_prices.push_back(0.0001);
+    stock_prices.push_back(5.0);
     for (int i = 1; i <= num_stocks; i++)
     {
         stock_prices.push_back(stock_prices[i-1]+5.0);
@@ -50,8 +56,8 @@ int main(int argc, const char * argv[])
     
     double K_low = 90.0;
     double K_high = 100.0;
-    myfile << "Stock Price, Call Spread UB, Call Spread LB, Call Spread MID\n";
-    
+    myfile << "Stock Price, Call Spread UB, Call Spread LB, Call Spread MID, Call Spread MID BS, BSB Call Spread UB, BSB Call Spread LB\n";
+   
     for (auto S = 0; S < stock_prices.size(); S++)
     {
         double price_1 = option_pricer_max.GetPrice(stock_prices[S], K_low, OptionType::Call);
@@ -63,17 +69,18 @@ int main(int argc, const char * argv[])
         double price_5 = option_pricer_mid.GetPrice(stock_prices[S], K_low, OptionType::Call);
         double price_6 = option_pricer_mid.GetPrice(stock_prices[S], K_high, OptionType::Call);
         
-        myfile << stock_prices[S] << "," << price_1-price_2 << "," << price_3-price_4 << "," << price_5-price_6 << ",\n";
+        //double price_7 = BSPrice(stock_prices[S], K_low, 0, T, sigma_mid, rf, div, true);
+        //double price_8 = BSPrice(stock_prices[S], K_high, 0, T, sigma_mid, rf, div, true);
+        
+        std::tuple<double, double> bsb_prices_low = bsb_pricer.GetPrice(stock_prices[S], K_low, OptionType::Call);
+        std::tuple<double, double> bsb_prices_high = bsb_pricer.GetPrice(stock_prices[S], K_high, OptionType::Call);
+        
+        myfile << stock_prices[S] << "," << price_1-price_2 << "," << price_3-price_4 << "," << price_5-price_6 << "," << std::get<1>(bsb_prices_low) - std::get<1>(bsb_prices_high) << "," << std::get<0>(bsb_prices_low) - std::get<0>(bsb_prices_high)<<  "\n";
     }
     
     
-    boost::shared_ptr<BarenblattTrinomialTree> bsb_tree = boost::make_shared<BarenblattTrinomialTree>(1.0, sigma_max, sigma_min, rf, div, T, 100.0);
-    bsb_tree->InitializeTree();
     
-    BarenblattDerivativePricer bsb_pricer(bsb_tree);
     
-    //Needs testing
-    bsb_pricer.GetPrice(stock_prices[1], K_low, OptionType::Call);
     
     myfile.close();
 }
