@@ -11,15 +11,17 @@
 
 #include <stdio.h>
 
+#include "BarenblattTrinomialTree.h"
 #include "OptionPricer.h"
 
-class BarenblattDerivativePricer : public OptionPricer<double, std::tuple<double, double>>
+class BarenblattDerivativePricer : public OptionPricer<double, BSBDerivative>
 {
 public:
     BarenblattDerivativePricer(double sigma_max, double sigma_min, double rf, double div, double T);
     BarenblattDerivativePricer(TreePtr ptr);
     
-    virtual std::tuple<double, double> GetPrice(double S0, double K, OptionType opt);
+    virtual BSBDerivative GetPrice(boost::function<double(double)> payoff);
+ 
 };
 
 #endif /* defined(__QuantPricer__BarenblattDerivativePricer__) */

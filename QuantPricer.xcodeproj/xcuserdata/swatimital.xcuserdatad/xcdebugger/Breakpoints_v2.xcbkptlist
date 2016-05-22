@@ -38,31 +38,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "QuantPricer/main.cpp"
-            timestampString = "485414011.601216"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
-            landmarkName = "main(int argc, const char * argv[])"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QuantPricer/main.cpp"
-            timestampString = "485377857.091126"
+            timestampString = "485592745.345815"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
             landmarkName = "main(int argc, const char * argv[])"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QuantPricer/BarenblattDerivativePricer.cpp"
-            timestampString = "485327938.5959"
+            timestampString = "485467177.901552"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "30"
             endingLineNumber = "30"
-            landmarkName = "BarenblattDerivativePricer::GetPrice(double S0, double K, OptionType opt)"
+            landmarkName = "BarenblattDerivativePricer::GetPrice(boost::function&lt;double(double)&gt; payoff)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -90,11 +74,107 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QuantPricer/BarenblattTrinomialTree.cpp"
-            timestampString = "485372329.866586"
+            timestampString = "485537554.012188"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "BarenblattTrinomialTree::BuildUnderlyingTree(double val, NodeDir ndir, int tree_level)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "QuantPricer/BarenblattDerivativePricer.cpp"
+            timestampString = "485592243.666027"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "BarenblattDerivativePricer::GetPrice(boost::function&lt;double(double)&gt; payoff)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "QuantPricer/BarenblattTrinomialTree.cpp"
+            timestampString = "485467177.901552"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "40"
             endingLineNumber = "40"
+            landmarkName = "BarenblattTrinomialTree::ComputeAssetPriceFactors()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "QuantPricer/BarenblattDerivativePricer.cpp"
+            timestampString = "485467177.901552"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "BarenblattDerivativePricer::GetPrice(boost::function&lt;double(double)&gt; payoff)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "QuantPricer/BarenblattDerivativePricer.cpp"
+            timestampString = "485592243.666027"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "BarenblattDerivativePricer::GetPrice(boost::function&lt;double(double)&gt; payoff)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "QuantPricer/main.cpp"
+            timestampString = "485592243.666027"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "ComputeCallSpreadBounds()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "QuantPricer/BarenblattTrinomialTree.cpp"
+            timestampString = "485537554.012188"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
             landmarkName = "BarenblattTrinomialTree::BuildUnderlyingTree(double val, NodeDir ndir, int tree_level)"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,28 +186,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QuantPricer/main.cpp"
-            timestampString = "485414011.601216"
+            timestampString = "485592243.666027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "main(int argc, const char * argv[])"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "QuantPricer/main.cpp"
-            timestampString = "485414011.601216"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "main(int argc, const char * argv[])"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "ComputeCallSpreadBounds()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -138,28 +202,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QuantPricer/BarenblattDerivativePricer.cpp"
-            timestampString = "485371987.53113"
+            timestampString = "485537547.054453"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "BarenblattDerivativePricer::GetPrice(double S0, double K, OptionType opt)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "QuantPricer/BarenblattTrinomialTree.cpp"
-            timestampString = "485372329.866586"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "BarenblattTrinomialTree::ComputeAssetPriceFactors()"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "BarenblattDerivativePricer::GetPrice(boost::function&lt;double(double)&gt; payoff)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -170,12 +218,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "QuantPricer/main.cpp"
-            timestampString = "485414011.601216"
+            timestampString = "485592819.551425"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "main(int argc, const char * argv[])"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "ComputeCallSpreadBounds()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -185,14 +233,46 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "QuantPricer/main.cpp"
-            timestampString = "485414011.601216"
+            filePath = "QuantPricer/OptionPayoffs.h"
+            timestampString = "485592922.275874"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "main(int argc, const char * argv[])"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "VanillaCallOption(double prop_ST, double St, double K)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "QuantPricer/VanillaOptionPricer.cpp"
+            timestampString = "485592958.238388"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "VanillaOptionPricer::GetPrice(boost::function&lt;double(double)&gt; payoff)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "QuantPricer/VanillaOptionPricer.cpp"
+            timestampString = "485592992.336439"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "VanillaOptionPricer::GetPrice(boost::function&lt;double(double)&gt; payoff)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

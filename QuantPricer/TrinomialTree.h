@@ -16,22 +16,13 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
 #include <queue>
+#include "TreeNode.h"
 
 enum NodeDir {Up, Middle, Down};
 
-template<typename Underlying, typename Derivative>
-struct Node
-{
-    std::tuple<Underlying, Derivative> values;
-    boost::shared_ptr<Node> up;
-    boost::shared_ptr<Node> middle;
-    boost::shared_ptr<Node> down;
-    
-    Node(){}
-    Node(Underlying underlying, Derivative derivative):values(std::make_tuple(underlying, derivative)){}
-};
 
-template<typename Underlying, typename Derivative>
+
+template<typename UnderlyingT, typename DerivativeT>
 class TrinomialTree
 {
 public:
@@ -69,7 +60,7 @@ public:
         return m_rf_rate;
     }
     
-    std::vector<boost::shared_ptr<Node<Underlying, Derivative>>> GetBreadthFirstNodeValues() const
+    std::vector<boost::shared_ptr<Node<UnderlyingT, DerivativeT>>> GetBreadthFirstNodeValues() const
     {
         return m_bf_nodes;
     }
@@ -89,14 +80,14 @@ public:
     virtual ~TrinomialTree() {}
     
 protected:
-    virtual void BreadthFirstTraversal(boost::shared_ptr<Node<Underlying, Derivative>> nd)
+    virtual void BreadthFirstTraversal(boost::shared_ptr<Node<UnderlyingT, DerivativeT>> nd)
     {
-        std::queue<boost::shared_ptr<Node<Underlying, Derivative>>> nodes;
+        std::queue<boost::shared_ptr<Node<UnderlyingT, DerivativeT>>> nodes;
         nodes.push(nd);
         
         while (!nodes.empty())
         {
-            boost::shared_ptr<Node<Underlying, Derivative>> n = nodes.front();
+            boost::shared_ptr<Node<UnderlyingT, DerivativeT>> n = nodes.front();
             nodes.pop();
             m_bf_nodes.push_back(n);
             if (n->up != nullptr)
@@ -110,7 +101,7 @@ protected:
         
     }
 
-    virtual boost::shared_ptr<Node<Underlying, Derivative>> BuildUnderlyingTree(double val, NodeDir ndir, int tree_level) = 0;
+    virtual boost::shared_ptr<Node<UnderlyingT, DerivativeT>> BuildUnderlyingTree(double val, NodeDir ndir, int tree_level) = 0;
     virtual void ComputeAssetPriceFactors()
     {
         m_up_factor = exp(m_sigma*sqrt(2.0*m_dt));
@@ -130,8 +121,8 @@ protected:
     double m_down_factor;
     double m_middle_factor;
     double m_up_prob, m_middle_prob, m_down_prob;
-    boost::shared_ptr<Node<Underlying, Derivative>> m_root;
-    std::vector<boost::shared_ptr<Node<Underlying, Derivative>>> m_bf_nodes;
+    boost::shared_ptr<Node<UnderlyingT, DerivativeT>> m_root;
+    std::vector<boost::shared_ptr<Node<UnderlyingT, DerivativeT>>> m_bf_nodes;
     bool m_initialized;
     
 };

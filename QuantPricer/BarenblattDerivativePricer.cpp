@@ -21,7 +21,7 @@ OptionPricer()
     m_treeptr = ptr;
 }
 
-std::tuple<double, double> BarenblattDerivativePricer::GetPrice(double S0, double K, OptionType opt)
+BSBDerivative BarenblattDerivativePricer::GetPrice(boost::function<double(double)> payoff)
 {
     auto m_bb_treeptr = boost::dynamic_pointer_cast<BarenblattTrinomialTree>(m_treeptr);
     m_bb_treeptr->InitializeTree();
@@ -31,23 +31,16 @@ std::tuple<double, double> BarenblattDerivativePricer::GetPrice(double S0, doubl
     auto dt = m_bb_treeptr->GetMaturity()/n;
     auto rf = m_bb_treeptr->GetRiskFreeRate();
     auto sigma_max = m_bb_treeptr->GetSigmaMax();
-    auto sigma_min = m_bb_treeptr->GetSigmaMin();
     auto end = nodes.size();
     auto start = nodes.size() - (2*n+1);
-    
+    auto p_lb = m_bb_treeptr->GetNodeProbLB();
+    auto p_ub = m_bb_treeptr->GetNodeProbUB();
     // Set the option values on the leaf nodes
     for (auto i = start; i < end; i++)
     {
-        std::tuple<double, double>& option_bounds = std::get<1>(nodes[i]->values);
-        if(opt == OptionType::Call)
-        {
-            std::get<0>(option_bounds) = (std::get<0>(nodes[i]->values)*S0 - K) >= 0 ? std::get<0>(nodes[i]->values)*S0 - K : 0;
-            std::get<1>(option_bounds) = std::get<0>(option_bounds);
-        }else{
-            
-            std::get<1>(option_bounds) = (K - std::get<0>(nodes[i]->values)*S0) >= 0 ? K - std::get<0>(nodes[i]->values)*S0: 0;
-            std::get<1>(option_bounds) = std::get<0>(option_bounds);
-        }
+        BSBDerivative& option_bounds = std::get<1>(nodes[i]->values);
+        std::get<0>(option_bounds.value) = payoff(std::get<0>(nodes[i]->values));
+        std::get<1>(option_bounds.value) = std::get<0>(option_bounds.value);
     }
     
     while (start >= 1)
@@ -57,19 +50,22 @@ std::tuple<double, double> BarenblattDerivativePricer::GetPrice(double S0, doubl
         auto j = end;
         for (auto i = start; i < end; i++,j++)
         {
-            std::tuple<double, double>& option_bounds = std::get<1>(nodes[i]->values);
-            std::tuple<double, double> next_up = std::get<1>(nodes[j]->values);
-            std::tuple<double, double> next_mid = std::get<1>(nodes[j+1]->values);
-            std::tuple<double, double> next_down = std::get<1>(nodes[j+2]->values);
+            BSBDerivative& option_bounds = std::get<1>(nodes[i]->values);
+            BSBDerivative next_up = std::get<1>(nodes[j]->values);
+            BSBDerivative next_mid = std::get<1>(nodes[j+1]->values);
+            BSBDerivative next_down = std::get<1>(nodes[j+2]->values);
             
-            auto gamma0 = (1 - (sigma_max*sqrt(dt)*0.5)) * std::get<0>(next_up) + (1 + (sigma_max*sqrt(dt)*0.5)) * std::get<0>(next_down) - 2.0*std::get<0>(next_mid);
+            auto gamma0 = (1 - (sigma_max*sqrt(dt)*0.5)) * std::get<0>(next_up.value) + (1 + (sigma_max*sqrt(dt)*0.5)) * std::get<0>(next_down.value) - 2.0*std::get<0>(next_mid.value);
             
-            auto gamma1 = (1 - (sigma_max*sqrt(dt)*0.5)) * std::get<1>(next_up) + (1 + (sigma_max*sqrt(dt)*0.5)) * std::get<1>(next_down) - 2.0*std::get<1>(next_mid);
+            auto gamma1 = (1 - (sigma_max*sqrt(dt)*0.5)) * std::get<1>(next_up.value) + (1 + (sigma_max*sqrt(dt)*0.5)) * std::get<1>(next_down.value) - 2.0*std::get<1>(next_mid.value);
             
-            std::get<0>(option_bounds) = (gamma0 >= 0) ? exp(-rf*dt)*(std::get<0>(next_mid) + 0.5*gamma0) :
-                exp(-rf*dt)*(std::get<0>(next_mid) + (sigma_min*sigma_min/(2*sigma_max*sigma_max))*gamma0);
+            std::get<0>(option_bounds.value) = (gamma0 >= 0) ? exp(-rf*dt)*(std::get<0>(next_mid.value) + p_ub*gamma0) :
+                exp(-rf*dt)*(std::get<0>(next_mid.value) + p_lb*gamma0);
            
-            std::get<1>(option_bounds) = (gamma1 < 0) ? exp(-rf*dt)*(std::get<1>(next_mid) + 0.5*gamma1) :exp(-rf*dt)*(std::get<1>(next_mid) + (sigma_min*sigma_min/(2*sigma_max*sigma_max))*gamma1);
+            std::get<1>(option_bounds.value) = (gamma1 < 0) ? exp(-rf*dt)*(std::get<1>(next_mid.value) + p_ub*gamma1) :exp(-rf*dt)*(std::get<1>(next_mid.value) + p_lb*gamma1);
+            
+            option_bounds.greeks = Greeks();
+            option_bounds.greeks->gamma = gamma0;
         }
     }
     

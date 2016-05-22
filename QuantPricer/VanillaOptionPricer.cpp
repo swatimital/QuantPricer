@@ -9,12 +9,12 @@
 #include "VanillaOptionPricer.h"
 #include "RecombiningTrinomialTree.h"
 
-VanillaOptionPricer::VanillaOptionPricer(double sigma, double rf, double div, double T) 
+VanillaOptionPricer::VanillaOptionPricer(double sigma, double rf, double div, double T) : OptionPricer()
 {
     m_treeptr = boost::make_shared<RecombiningTrinomialTree>(RecombiningTrinomialTree(1.0, sigma, rf, div, T, 100.0));
 }
 
-VanillaOptionPricer::VanillaOptionPricer(TreePtr treePtr)
+VanillaOptionPricer::VanillaOptionPricer(TreePtr treePtr) : OptionPricer()
 {
     m_treeptr = treePtr;
 }
@@ -22,7 +22,7 @@ VanillaOptionPricer::VanillaOptionPricer(TreePtr treePtr)
 VanillaOptionPricer::~VanillaOptionPricer()
 {}
 
-double VanillaOptionPricer::GetPrice(double S0, double K, OptionType opt)
+double VanillaOptionPricer::GetPrice(boost::function<double(double)> payoff)
 {
     m_treeptr->InitializeTree();
     auto nodes = m_treeptr->GetBreadthFirstNodeValues();
@@ -37,13 +37,7 @@ double VanillaOptionPricer::GetPrice(double S0, double K, OptionType opt)
     // Set the option values on the leaf nodes
     for (auto i = start; i < end; i++)
     {
-        if(opt == OptionType::Call)
-        {
-            std::get<1>(nodes[i]->values) = (std::get<0>(nodes[i]->values)*S0 - K) >= 0 ? std::get<0>(nodes[i]->values)*S0 - K : 0;
-        }else{
-            
-            std::get<1>(nodes[i]->values) = (K - std::get<0>(nodes[i]->values)*S0) >= 0 ? K - std::get<0>(nodes[i]->values)*S0: 0;
-        }
+        std::get<1>(nodes[i]->values) = payoff(std::get<0>(nodes[i]->values));
     }
     
     while (start >= 1)

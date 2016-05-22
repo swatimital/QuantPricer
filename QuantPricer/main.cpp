@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <boost/function.hpp>
+#include <boost/bind.hpp>
 #include <map>
 #include <vector>
 #include <iostream>
@@ -17,15 +18,16 @@
 #include "BarenblattTrinomialTree.h"
 #include "BarenblattDerivativePricer.h"
 #include "BlackScholesOptionPricer.h"
+#include "OptionPayoffs.h"
 
-int main(int argc, const char * argv[])
+void ComputeCallSpreadBounds()
 {
-    std::ofstream myfile;
-    myfile.open("/Users/swatimital/GitHub/QuantPricer/Results/CallPriceBounds.csv");
+    std::ofstream bsb_file;
+    bsb_file.open("/Users/swatimital/GitHub/QuantPricer/Results/CallPriceBounds.csv");
     
     double sigma_max = 0.4;
     double sigma_min = 0.1;
-    double sigma_mid = 0.5*(sigma_max + sigma_min);
+    double sigma_mid = 0.5*(sigma_max+sigma_min);
     double T = 0.5;
     double div = 0.0;
     double rf = 0.1;
@@ -56,31 +58,119 @@ int main(int argc, const char * argv[])
     
     double K_low = 90.0;
     double K_high = 100.0;
-    myfile << "Stock Price, Call Spread UB, Call Spread LB, Call Spread MID, Call Spread MID BS, BSB Call Spread UB, BSB Call Spread LB\n";
-   
+    bsb_file << "Stock Price, Call Spread UB, Call Spread LB, Call Spread MID, BSB Call Spread UB, BSB Call Spread LB\n";
+    
     for (auto S = 0; S < stock_prices.size(); S++)
     {
-        double price_1 = option_pricer_max.GetPrice(stock_prices[S], K_low, OptionType::Call);
-        double price_2 = option_pricer_min.GetPrice(stock_prices[S], K_high, OptionType::Call);
+        double price_1 = option_pricer_max.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1, stock_prices[S], K_low));
+        double price_2 = option_pricer_min.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1, stock_prices[S], K_high));
         
-        double price_3 = option_pricer_min.GetPrice(stock_prices[S], K_low, OptionType::Call);
-        double price_4 = option_pricer_max.GetPrice(stock_prices[S], K_high, OptionType::Call);
+        double price_3 = option_pricer_min.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1, stock_prices[S], K_low));
+        double price_4 = option_pricer_max.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1,stock_prices[S], K_high));
         
-        double price_5 = option_pricer_mid.GetPrice(stock_prices[S], K_low, OptionType::Call);
-        double price_6 = option_pricer_mid.GetPrice(stock_prices[S], K_high, OptionType::Call);
+        double price_5 = option_pricer_mid.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1,stock_prices[S], K_low));
+        double price_6 = option_pricer_mid.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1,stock_prices[S], K_high));
         
-        //double price_7 = BSPrice(stock_prices[S], K_low, 0, T, sigma_mid, rf, div, true);
-        //double price_8 = BSPrice(stock_prices[S], K_high, 0, T, sigma_mid, rf, div, true);
-        
-        std::tuple<double, double> bsb_prices_low = bsb_pricer.GetPrice(stock_prices[S], K_low, OptionType::Call);
-        std::tuple<double, double> bsb_prices_high = bsb_pricer.GetPrice(stock_prices[S], K_high, OptionType::Call);
-        
-        myfile << stock_prices[S] << "," << price_1-price_2 << "," << price_3-price_4 << "," << price_5-price_6 << "," << std::get<1>(bsb_prices_low) - std::get<1>(bsb_prices_high) << "," << std::get<0>(bsb_prices_low) - std::get<0>(bsb_prices_high)<<  "\n";
+        BSBDerivative bsb_prices = bsb_pricer.GetPrice(boost::bind(OptionPayoffs::BullCallSpread, _1,stock_prices[S], K_low, K_high));
+       
+        bsb_file << stock_prices[S] << "," << price_1-price_2 << "," << price_3-price_4 << "," << price_5-price_6 << "," << std::get<0>(bsb_prices.value) << "," << std::get<1>(bsb_prices.value) <<  "\n";
     }
     
+    bsb_file.close();
+}
+
+void ComputeCalendarSpreadBounds()
+{
+    double sigma_max = 0.4;
+    double sigma_min = 0.1;
+    double sigma_mid = 0.5*(sigma_max+sigma_min);
+    double T_low = 0.5;
+    double T_high = 1.0;
+    double div = 0.0;
+    double rf = 0.1;
     
     
+    std::ofstream bsb_file;
+    bsb_file.open("/Users/swatimital/GitHub/QuantPricer/Results/CalendarSpreadBounds.csv");
     
+    boost::shared_ptr<BarenblattTrinomialTree> bsb_tree_T_low = boost::make_shared<BarenblattTrinomialTree>(1.0, sigma_max, sigma_min, rf, div, T_low, 100.0);
+    boost::shared_ptr<BarenblattTrinomialTree> bsb_tree_T_high = boost::make_shared<BarenblattTrinomialTree>(1.0, sigma_max, sigma_min, rf, div, T_high, 100.0);
     
-    myfile.close();
+    bsb_tree_T_low->InitializeTree();
+    bsb_tree_T_high->InitializeTree();
+    
+    BarenblattDerivativePricer bsb_pricer_T_high(bsb_tree_T_high);
+    BarenblattDerivativePricer bsb_pricer_T_low(bsb_tree_T_low);
+    
+    int num_stocks = 200/5;
+    std::vector<double> stock_prices;
+    stock_prices.push_back(5.0);
+    for (int i = 1; i <= num_stocks; i++)
+    {
+        stock_prices.push_back(stock_prices[i-1]+5.0);
+    }
+    
+    double K_low = 90.0;
+    double K_high = 100.0;
+    bsb_file << "Stock Price, Call Spread UB, Call Spread LB, Call Spread MID, BSB Call Spread UB, BSB Call Spread LB\n";
+    
+    for (auto S = 0; S < stock_prices.size(); S++)
+    {
+        double price_1 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_low, 0, T_high, sigma_max, rf, div);
+        double price_2 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_high, 0, T_low, sigma_min, rf, div);
+        
+        double price_3 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_low, 0, T_high, sigma_min, rf, div);
+        double price_4 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_high, 0, T_low, sigma_max, rf, div);
+        
+        double price_5 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_low, 0, T_high, sigma_mid, rf, div);
+        double price_6 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_high, 0, T_low, sigma_mid, rf, div);
+        
+        //BSBDerivative bsb_prices = bsb_pricer.GetPrice();
+
+        
+        bsb_file << stock_prices[S] << "," << price_1-price_2 << "," << price_3-price_4 << "," << price_5-price_6 << "\n";
+    }
+    
+    bsb_file.close();
+}
+
+void ComputeCallPricesAsFunctionOfK()
+{
+    double sigma_max = 0.4;
+    double sigma_min = 0.1;
+    double sigma_mid = 0.5*(sigma_max+sigma_min);
+    double T = 0.5;
+    double div = 0.0;
+    double rf = 0.1;
+
+    // Get Call Prices as function of strikes
+    std::ofstream call_prices_file;
+    call_prices_file.open("/Users/swatimital/GitHub/QuantPricer/Results/CallPricesFixedStock.csv");
+    
+    std::vector<double> strike_rates;
+    strike_rates.push_back(0.0);
+    
+    for (int i = 1; i <= 100; i++)
+    {
+        strike_rates.push_back(strike_rates[i-1] + 5.0);
+    }
+    
+    call_prices_file << "Strike, Prices" << "\n";
+    for(auto K = 0; K < strike_rates.size(); K++)
+    {
+        call_prices_file << strike_rates[K] << "," << BlackScholesOptionPricer::BSPrice(200.0, strike_rates[K], 0, T, sigma_mid, rf, div) << "\n";
+    }
+    
+    call_prices_file.close();
+}
+
+
+int main(int argc, const char * argv[])
+{
+    ComputeCallSpreadBounds();
+    
+    ComputeCalendarSpreadBounds();
+    
+    ComputeCallPricesAsFunctionOfK();
+    
 }

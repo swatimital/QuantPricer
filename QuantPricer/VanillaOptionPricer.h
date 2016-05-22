@@ -20,7 +20,7 @@ public:
     VanillaOptionPricer(double sigma, double rf, double div, double T);
     VanillaOptionPricer(TreePtr treeptr);
     virtual ~VanillaOptionPricer();
-    virtual double GetPrice(double S0, double K, OptionType opt);
+    virtual double GetPrice(boost::function<double(double)> payoff);
 };
 
 #endif /* defined(__QuantPricer__VanillaOptionPricer__) */

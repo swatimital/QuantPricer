@@ -11,19 +11,17 @@
 
 #include <stdio.h>
 #include <boost/shared_ptr.hpp>
+#include <boost/function.hpp>
 #include "TrinomialTree.h"
 
-enum OptionType {Call, Put};
-
-template<class Underlying, class Derivative>
+template<class UnderlyingT, class DerivativeT>
 class OptionPricer
 {
 public:
-    typedef boost::shared_ptr<TrinomialTree<Underlying, Derivative>> TreePtr;
+    typedef boost::shared_ptr<TrinomialTree<UnderlyingT, DerivativeT>> TreePtr;
     OptionPricer() {};
     virtual ~OptionPricer() {};
-    virtual Derivative GetPrice(double S0, double K, OptionType opt) = 0;
-    
+    virtual DerivativeT GetPrice(boost::function<double(double)> payoff) = 0;
     
 protected:
     TreePtr m_treeptr;

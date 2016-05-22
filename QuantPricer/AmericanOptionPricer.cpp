@@ -20,7 +20,7 @@ AmericanOptionPricer::AmericanOptionPricer(TreePtr ptr) : VanillaOptionPricer(pt
 AmericanOptionPricer::~AmericanOptionPricer()
 {}
 
-double AmericanOptionPricer::GetPrice(double S0, double K, OptionType opt)
+double AmericanOptionPricer::GetPrice(boost::function<double(double)> payoff)
 {
     auto nodes = m_treeptr->GetBreadthFirstNodeValues();
     auto n = m_treeptr->GetLevel();
@@ -34,13 +34,7 @@ double AmericanOptionPricer::GetPrice(double S0, double K, OptionType opt)
     // Set the option values on the leaf nodes
     for (auto i = start; i < end; i++)
     {
-        if(opt == OptionType::Call)
-        {
-            std::get<1>(nodes[i]->values) = (std::get<0>(nodes[i]->values)*S0 - K) >= 0 ? std::get<0>(nodes[i]->values)*S0 - K : 0;
-        }else{
-            
-            std::get<1>(nodes[i]->values) = (K - std::get<0>(nodes[i]->values)*S0) >= 0 ? K - std::get<0>(nodes[i]->values)*S0: 0;
-        }
+        std::get<1>(nodes[i]->values) = payoff(std::get<0>(nodes[i]->values));
     }
     
     while (start >= 1)

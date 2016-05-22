@@ -19,8 +19,20 @@ void BarenblattTrinomialTree::InitializeTree()
         ComputeAssetPriceFactors();
         m_root = BuildUnderlyingTree(m_S0, NodeDir::Middle, 0);
         BreadthFirstTraversal(m_root);
+        m_p_lb = (m_sigma_min*m_sigma_min)/(2.0*m_sigma_max*m_sigma_max);
+        m_p_ub = 0.5;
         m_initialized = true;
     }
+}
+
+double BarenblattTrinomialTree::GetNodeProbLB() const
+{
+    return m_p_lb;
+}
+
+double BarenblattTrinomialTree::GetNodeProbUB() const
+{
+    return m_p_ub;
 }
 
 void BarenblattTrinomialTree::ComputeAssetPriceFactors()
@@ -33,19 +45,19 @@ void BarenblattTrinomialTree::ComputeAssetPriceFactors()
 double BarenblattTrinomialTree::GetSigmaMax() const { return m_sigma_max; }
 double BarenblattTrinomialTree::GetSigmaMin() const { return m_sigma_min; }
 
-boost::shared_ptr<Node<double, std::tuple<double, double>>> BarenblattTrinomialTree::BuildUnderlyingTree(double val, NodeDir ndir, int tree_level)
+boost::shared_ptr<Node<double, BSBDerivative>> BarenblattTrinomialTree::BuildUnderlyingTree(double val, NodeDir ndir, int tree_level)
 {
-    boost::shared_ptr<Node<double, std::tuple<double, double>>> nd;
+    boost::shared_ptr<Node<double, BSBDerivative>> nd;
     
     if (tree_level > m_steps)
         return nullptr;
     
     if (ndir == NodeDir::Up) {
-        nd = boost::make_shared<Node<double, std::tuple<double, double>>>(m_up_factor*val, std::make_tuple<double, double>(-1.0, -1.0));
+        nd = boost::make_shared<Node<double, BSBDerivative>>(m_up_factor*val, BSBDerivative(std::make_tuple<double, double>(-1.0,-1.0)));
     } else if(ndir == NodeDir::Down) {
-        nd = boost::make_shared<Node<double, std::tuple<double, double>>>(m_down_factor*val, std::make_tuple<double, double>(-1.0, -1.0));
+        nd = boost::make_shared<Node<double, BSBDerivative>>(m_down_factor*val, BSBDerivative(std::make_tuple<double, double>(-1.0,-1.0)));
     } else {
-        nd = boost::make_shared<Node<double, std::tuple<double, double>>>(m_middle_factor*val, std::make_tuple<double, double>(-1.0, -1.0));
+        nd = boost::make_shared<Node<double, BSBDerivative>>(m_middle_factor*val, BSBDerivative(std::make_tuple<double, double>(-1.0,-1.0)));
     }
     
     if (tree_level == 0) {
