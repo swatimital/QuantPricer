@@ -9,17 +9,23 @@
 #ifndef QuantPricer_TreeNode_h
 #define QuantPricer_TreeNode_h
 
-
-template<typename UnderlyingT, typename DerivativeT>
-struct Node
+namespace QuantPricer
 {
-    std::tuple<UnderlyingT, DerivativeT> values;
-    boost::shared_ptr<Node> up;
-    boost::shared_ptr<Node> middle;
-    boost::shared_ptr<Node> down;
-    
-    Node(){}
-    Node(UnderlyingT underlying, DerivativeT derivative):values(std::make_tuple(underlying, derivative)){}
-};
+    namespace FiniteDiffMethods
+    {
+        template<typename UnderlyingT, typename DerivativeT>
+        struct Node
+        {
+            std::tuple<UnderlyingT, DerivativeT> values;
+            boost::shared_ptr<Node> up;
+            boost::shared_ptr<Node> middle;
+            boost::shared_ptr<Node> down;
+            
+            Node(){}
+            Node(UnderlyingT underlying, DerivativeT derivative):values(std::make_tuple(underlying, derivative)){}
+        };
+    }
+}
+
 
 #endif

@@ -13,14 +13,21 @@
 #include <boost/make_shared.hpp>
 #include "OptionPricer.h"
 
-
-class RecombiningTreeOptionPricer : public OptionPricer<double, double>
+namespace QuantPricer
 {
-public:
-    RecombiningTreeOptionPricer(double sigma, double rf, double div, double T);
-    RecombiningTreeOptionPricer(TreePtr treeptr);
-    virtual ~RecombiningTreeOptionPricer();
-    virtual double GetPrice(boost::function<double(double)> payoff);
-};
+    namespace PricingEngine
+    {
+        class RecombiningTreeOptionPricer : public OptionPricer<double, double>
+        {
+        public:
+            RecombiningTreeOptionPricer(double sigma, double rf, double div, double T);
+            RecombiningTreeOptionPricer(TreePtr treeptr);
+            virtual ~RecombiningTreeOptionPricer();
+            virtual double GetPrice(boost::function<double(double)> payoff);
+        };
+    }
+}
+
+
 
 #endif /* defined(__QuantPricer__VanillaOptionPricer__) */

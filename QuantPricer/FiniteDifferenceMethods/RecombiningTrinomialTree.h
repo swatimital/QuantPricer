@@ -12,14 +12,22 @@
 #include <stdio.h>
 #include "TrinomialTree.h"
 
-class RecombiningTrinomialTree : public TrinomialTree<double, double>
+namespace QuantPricer
 {
-public:
-    RecombiningTrinomialTree(double S0, double sigma, double rf, double dividend, double T, double steps=100.0);
-    virtual void InitializeTree();
-    
-protected:
-    virtual boost::shared_ptr<Node<double, double>> BuildUnderlyingTree(double val, NodeDir ndir, int tree_level);
-};
+    namespace FiniteDiffMethods
+    {
+        class RecombiningTrinomialTree : public TrinomialTree<double, double>
+        {
+        public:
+            RecombiningTrinomialTree(double S0, double sigma, double rf, double dividend, double T, double steps=100.0);
+            virtual void InitializeTree();
+            
+        protected:
+            virtual boost::shared_ptr<Node<double, double>> BuildUnderlyingTree(double val, NodeDir ndir, int tree_level);
+        };
+    }
+}
+
+
 
 #endif /* defined(__QuantPricer__RecombiningTrinomialTree__) */

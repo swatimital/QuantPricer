@@ -15,10 +15,15 @@
 #include <fstream>
 #include "PricingEngine/RecombiningTreeOptionPricer.h"
 #include "FiniteDifferenceMethods/RecombiningTrinomialTree.h"
-#include "FiniteDifferenceMethods/BarenblattTrinomialTree.h"
+#include "UncertainVolatility/BarenblattTrinomialTree.h"
 #include "PricingEngine/BarenblattDerivativePricer.h"
 #include "PricingEngine/BlackScholesOptionPricer.h"
 #include "Products/Equities/OptionPayoffs.h"
+
+using namespace QuantPricer::PricingEngine;
+using namespace QuantPricer::FiniteDiffMethods;
+using namespace QuantPricer::UncertainVolatility;
+using namespace QuantPricer::Equities;
 
 void ComputeCallSpreadBounds()
 {
@@ -71,7 +76,7 @@ void ComputeCallSpreadBounds()
         double price_5 = option_pricer_mid.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1,stock_prices[S], K_low));
         double price_6 = option_pricer_mid.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1,stock_prices[S], K_high));
         
-        BSBDerivative bsb_prices = bsb_pricer.GetPrice(boost::bind(OptionPayoffs::BullCallSpread, _1,stock_prices[S], K_low, K_high));
+        BarenblattDerivative bsb_prices = bsb_pricer.GetPrice(boost::bind(OptionPayoffs::BullCallSpread, _1,stock_prices[S], K_low, K_high));
        
         bsb_file << stock_prices[S] << "," << price_1-price_2 << "," << price_3-price_4 << "," << price_5-price_6 << "," << std::get<0>(bsb_prices.value) << "," << std::get<1>(bsb_prices.value) <<  "\n";
     }
@@ -125,7 +130,7 @@ void ComputeCalendarSpreadBounds()
         double price_5 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_low, 0, T_high, sigma_mid, rf, div);
         double price_6 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_high, 0, T_low, sigma_mid, rf, div);
         
-        //BSBDerivative bsb_prices = bsb_pricer.GetPrice();
+        //BarenblattDerivative bsb_prices = bsb_pricer.GetPrice();
 
         
         bsb_file << stock_prices[S] << "," << price_1-price_2 << "," << price_3-price_4 << "," << price_5-price_6 << "\n";

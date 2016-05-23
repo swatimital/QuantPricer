@@ -12,14 +12,21 @@
 #include <stdio.h>
 #include "RecombiningTreeOptionPricer.h"
 
-class AmericanOptionPricer : public RecombiningTreeOptionPricer
+namespace QuantPricer
 {
-public:
-    AmericanOptionPricer(double sigma, double rf, double div, double T);
-    AmericanOptionPricer(TreePtr);
-    ~AmericanOptionPricer();
-    virtual double GetPrice(boost::function<double(double)> payoff);
-    
-};
+    namespace PricingEngine
+    {
+        class AmericanOptionPricer : public RecombiningTreeOptionPricer
+        {
+        public:
+            AmericanOptionPricer(double sigma, double rf, double div, double T);
+            AmericanOptionPricer(TreePtr);
+            ~AmericanOptionPricer();
+            virtual double GetPrice(boost::function<double(double)> payoff);
+            
+        };
+    }
+}
+
 
 #endif /* defined(__QuantPricer__AmericanOptionPricer__) */

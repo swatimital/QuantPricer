@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		3A21E0571CE8B24F008F150F /* TrinomialTreeTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A21E0551CE8B24F008F150F /* TrinomialTreeTest.cpp */; };
-		3A28A4FE1CF3772E002D389B /* BarenblattTrinomialTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A28A4F71CF3772E002D389B /* BarenblattTrinomialTree.cpp */; };
 		3A28A4FF1CF3772E002D389B /* NonRecombiningTrinomialTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A28A4F81CF3772E002D389B /* NonRecombiningTrinomialTree.cpp */; };
 		3A28A5001CF3772E002D389B /* RecombiningTrinomialTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A28A4F91CF3772E002D389B /* RecombiningTrinomialTree.cpp */; };
 		3A28A51D1CF378D7002D389B /* AmericanOptionPricer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A28A5181CF378D7002D389B /* AmericanOptionPricer.cpp */; };
 		3A28A51E1CF378D7002D389B /* BarenblattDerivativePricer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A28A5191CF378D7002D389B /* BarenblattDerivativePricer.cpp */; };
 		3A28A51F1CF378D7002D389B /* RecombiningTreeOptionPricer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A28A51A1CF378D7002D389B /* RecombiningTreeOptionPricer.cpp */; };
+		3A28A52B1CF399F3002D389B /* BarenblattTrinomialTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A28A52A1CF399F3002D389B /* BarenblattTrinomialTree.cpp */; };
 		3AA94B3B1CDCED7C004D032A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AA94B3A1CDCED7C004D032A /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -32,8 +32,6 @@
 /* Begin PBXFileReference section */
 		3A21E0551CE8B24F008F150F /* TrinomialTreeTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrinomialTreeTest.cpp; sourceTree = "<group>"; };
 		3A21E0561CE8B24F008F150F /* TrinomialTreeTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrinomialTreeTest.h; sourceTree = "<group>"; };
-		3A28A4F51CF3772E002D389B /* BarenblattTrinomialTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarenblattTrinomialTree.h; sourceTree = "<group>"; };
-		3A28A4F71CF3772E002D389B /* BarenblattTrinomialTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BarenblattTrinomialTree.cpp; sourceTree = "<group>"; };
 		3A28A4F81CF3772E002D389B /* NonRecombiningTrinomialTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NonRecombiningTrinomialTree.cpp; sourceTree = "<group>"; };
 		3A28A4F91CF3772E002D389B /* RecombiningTrinomialTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecombiningTrinomialTree.cpp; sourceTree = "<group>"; };
 		3A28A4FA1CF3772E002D389B /* NonRecombiningTrinomialTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NonRecombiningTrinomialTree.h; sourceTree = "<group>"; };
@@ -44,12 +42,14 @@
 		3A28A5131CF378D7002D389B /* AmericanOptionPricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmericanOptionPricer.h; sourceTree = "<group>"; };
 		3A28A5141CF378D7002D389B /* BarenblattDerivativePricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarenblattDerivativePricer.h; sourceTree = "<group>"; };
 		3A28A5151CF378D7002D389B /* BlackScholesOptionPricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlackScholesOptionPricer.h; sourceTree = "<group>"; };
-		3A28A5161CF378D7002D389B /* Derivative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Derivative.h; sourceTree = "<group>"; };
 		3A28A5181CF378D7002D389B /* AmericanOptionPricer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AmericanOptionPricer.cpp; sourceTree = "<group>"; };
 		3A28A5191CF378D7002D389B /* BarenblattDerivativePricer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BarenblattDerivativePricer.cpp; sourceTree = "<group>"; };
 		3A28A51A1CF378D7002D389B /* RecombiningTreeOptionPricer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecombiningTreeOptionPricer.cpp; sourceTree = "<group>"; };
 		3A28A51B1CF378D7002D389B /* OptionPricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionPricer.h; sourceTree = "<group>"; };
 		3A28A51C1CF378D7002D389B /* RecombiningTreeOptionPricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecombiningTreeOptionPricer.h; sourceTree = "<group>"; };
+		3A28A5271CF399F3002D389B /* BarenblattTrinomialTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarenblattTrinomialTree.h; sourceTree = "<group>"; };
+		3A28A52A1CF399F3002D389B /* BarenblattTrinomialTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BarenblattTrinomialTree.cpp; sourceTree = "<group>"; };
+		3A28A52C1CF39A63002D389B /* Derivative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Derivative.h; sourceTree = "<group>"; };
 		3A72159A1C8CE61D000FE88F /* QuantPricer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = QuantPricer; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AA94B3A1CDCED7C004D032A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -77,7 +77,6 @@
 		3A28A4F41CF3772E002D389B /* FiniteDifferenceMethods */ = {
 			isa = PBXGroup;
 			children = (
-				3A28A4F51CF3772E002D389B /* BarenblattTrinomialTree.h */,
 				3A28A4F61CF3772E002D389B /* imp */,
 				3A28A4FA1CF3772E002D389B /* NonRecombiningTrinomialTree.h */,
 				3A28A4FB1CF3772E002D389B /* RecombiningTrinomialTree.h */,
@@ -90,7 +89,6 @@
 		3A28A4F61CF3772E002D389B /* imp */ = {
 			isa = PBXGroup;
 			children = (
-				3A28A4F71CF3772E002D389B /* BarenblattTrinomialTree.cpp */,
 				3A28A4F81CF3772E002D389B /* NonRecombiningTrinomialTree.cpp */,
 				3A28A4F91CF3772E002D389B /* RecombiningTrinomialTree.cpp */,
 			);
@@ -108,6 +106,7 @@
 		3A28A5041CF3774F002D389B /* Equities */ = {
 			isa = PBXGroup;
 			children = (
+				3A28A52C1CF39A63002D389B /* Derivative.h */,
 				3A28A5081CF3774F002D389B /* imp */,
 				3A28A50C1CF3774F002D389B /* OptionPayoffs.h */,
 			);
@@ -127,7 +126,6 @@
 				3A28A5131CF378D7002D389B /* AmericanOptionPricer.h */,
 				3A28A5141CF378D7002D389B /* BarenblattDerivativePricer.h */,
 				3A28A5151CF378D7002D389B /* BlackScholesOptionPricer.h */,
-				3A28A5161CF378D7002D389B /* Derivative.h */,
 				3A28A5171CF378D7002D389B /* imp */,
 				3A28A51B1CF378D7002D389B /* OptionPricer.h */,
 				3A28A51C1CF378D7002D389B /* RecombiningTreeOptionPricer.h */,
@@ -141,6 +139,23 @@
 				3A28A5181CF378D7002D389B /* AmericanOptionPricer.cpp */,
 				3A28A5191CF378D7002D389B /* BarenblattDerivativePricer.cpp */,
 				3A28A51A1CF378D7002D389B /* RecombiningTreeOptionPricer.cpp */,
+			);
+			path = imp;
+			sourceTree = "<group>";
+		};
+		3A28A5261CF399F3002D389B /* UncertainVolatility */ = {
+			isa = PBXGroup;
+			children = (
+				3A28A5271CF399F3002D389B /* BarenblattTrinomialTree.h */,
+				3A28A5291CF399F3002D389B /* imp */,
+			);
+			path = UncertainVolatility;
+			sourceTree = "<group>";
+		};
+		3A28A5291CF399F3002D389B /* imp */ = {
+			isa = PBXGroup;
+			children = (
+				3A28A52A1CF399F3002D389B /* BarenblattTrinomialTree.cpp */,
 			);
 			path = imp;
 			sourceTree = "<group>";
@@ -165,6 +180,7 @@
 		3A72159C1C8CE61D000FE88F /* QuantPricer */ = {
 			isa = PBXGroup;
 			children = (
+				3A28A5261CF399F3002D389B /* UncertainVolatility */,
 				3A28A5121CF378D7002D389B /* PricingEngine */,
 				3A28A5011CF3774F002D389B /* Products */,
 				3A28A4F41CF3772E002D389B /* FiniteDifferenceMethods */,
@@ -231,10 +247,10 @@
 			files = (
 				3A21E0571CE8B24F008F150F /* TrinomialTreeTest.cpp in Sources */,
 				3AA94B3B1CDCED7C004D032A /* main.cpp in Sources */,
+				3A28A52B1CF399F3002D389B /* BarenblattTrinomialTree.cpp in Sources */,
 				3A28A51E1CF378D7002D389B /* BarenblattDerivativePricer.cpp in Sources */,
 				3A28A51F1CF378D7002D389B /* RecombiningTreeOptionPricer.cpp in Sources */,
 				3A28A5001CF3772E002D389B /* RecombiningTrinomialTree.cpp in Sources */,
-				3A28A4FE1CF3772E002D389B /* BarenblattTrinomialTree.cpp in Sources */,
 				3A28A4FF1CF3772E002D389B /* NonRecombiningTrinomialTree.cpp in Sources */,
 				3A28A51D1CF378D7002D389B /* AmericanOptionPricer.cpp in Sources */,
 			);

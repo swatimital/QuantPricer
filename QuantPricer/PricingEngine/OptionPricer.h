@@ -14,17 +14,24 @@
 #include <boost/function.hpp>
 #include "TrinomialTree.h"
 
-template<class UnderlyingT, class DerivativeT>
-class OptionPricer
+namespace QuantPricer
 {
-public:
-    typedef boost::shared_ptr<TrinomialTree<UnderlyingT, DerivativeT>> TreePtr;
-    OptionPricer() {};
-    virtual ~OptionPricer() {};
-    virtual DerivativeT GetPrice(boost::function<double(double)> payoff) = 0;
-    
-protected:
-    TreePtr m_treeptr;
-};
+    namespace PricingEngine
+    {
+        template<class UnderlyingT, class DerivativeT>
+        class OptionPricer
+        {
+        public:
+            typedef boost::shared_ptr<FiniteDiffMethods::TrinomialTree<UnderlyingT, DerivativeT>> TreePtr;
+            OptionPricer() {};
+            virtual ~OptionPricer() {};
+            virtual DerivativeT GetPrice(boost::function<double(double)> payoff) = 0;
+            
+        protected:
+            TreePtr m_treeptr;
+        };
+    }
+}
+
 
 #endif /* defined(__QuantPricer__OptionPricer__) */

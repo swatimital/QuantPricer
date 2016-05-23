@@ -14,14 +14,21 @@
 #include "BarenblattTrinomialTree.h"
 #include "OptionPricer.h"
 
-class BarenblattDerivativePricer : public OptionPricer<double, BSBDerivative>
+namespace QuantPricer
 {
-public:
-    BarenblattDerivativePricer(double sigma_max, double sigma_min, double rf, double div, double T);
-    BarenblattDerivativePricer(TreePtr ptr);
-    
-    virtual BSBDerivative GetPrice(boost::function<double(double)> payoff);
- 
-};
+    namespace PricingEngine
+    {
+        class BarenblattDerivativePricer : public OptionPricer<double,Equities::BarenblattDerivative>
+        {
+        public:
+            BarenblattDerivativePricer(double sigma_max, double sigma_min, double rf, double div, double T);
+            BarenblattDerivativePricer(TreePtr ptr);
+            
+            virtual Equities::BarenblattDerivative GetPrice(boost::function<double(double)> payoff);
+            
+        };
+
+    }
+}
 
 #endif /* defined(__QuantPricer__BarenblattDerivativePricer__) */
