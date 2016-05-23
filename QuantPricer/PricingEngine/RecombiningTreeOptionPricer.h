@@ -6,20 +6,20 @@
 //  Copyright (c) 2016 Swati Mital. All rights reserved.
 //
 
-#ifndef __QuantPricer__VanillaOptionPricer__
-#define __QuantPricer__VanillaOptionPricer__
+#ifndef __QuantPricer__RecombiningTreeOptionPricer__
+#define __QuantPricer__RecombiningTreeOptionPricer__
 
 #include <stdio.h>
 #include <boost/make_shared.hpp>
 #include "OptionPricer.h"
 
 
-class VanillaOptionPricer : public OptionPricer<double, double>
+class RecombiningTreeOptionPricer : public OptionPricer<double, double>
 {
 public:
-    VanillaOptionPricer(double sigma, double rf, double div, double T);
-    VanillaOptionPricer(TreePtr treeptr);
-    virtual ~VanillaOptionPricer();
+    RecombiningTreeOptionPricer(double sigma, double rf, double div, double T);
+    RecombiningTreeOptionPricer(TreePtr treeptr);
+    virtual ~RecombiningTreeOptionPricer();
     virtual double GetPrice(boost::function<double(double)> payoff);
 };
 

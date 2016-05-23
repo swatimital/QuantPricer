@@ -1,27 +1,30 @@
 //
-//  AmericanOptionPricer.cpp
+//  VanillaOptionPricer.cpp
 //  QuantPricer
 //
-//  Created by Swati Mital on 16/05/16.
+//  Created by Swati Mital on 15/05/16.
 //  Copyright (c) 2016 Swati Mital. All rights reserved.
 //
 
-#include "AmericanOptionPricer.h"
+#include "RecombiningTreeOptionPricer.h"
+#include "RecombiningTrinomialTree.h"
 
-AmericanOptionPricer::AmericanOptionPricer(double sigma, double rf, double div, double T) :
-VanillaOptionPricer(sigma, rf, div, T)
+RecombiningTreeOptionPricer::RecombiningTreeOptionPricer(double sigma, double rf, double div, double T) : OptionPricer()
 {
+    m_treeptr = boost::make_shared<RecombiningTrinomialTree>(RecombiningTrinomialTree(1.0, sigma, rf, div, T, 100.0));
 }
 
-AmericanOptionPricer::AmericanOptionPricer(TreePtr ptr) : VanillaOptionPricer(ptr)
+RecombiningTreeOptionPricer::RecombiningTreeOptionPricer(TreePtr treePtr) : OptionPricer()
 {
+    m_treeptr = treePtr;
 }
 
-AmericanOptionPricer::~AmericanOptionPricer()
+RecombiningTreeOptionPricer::~RecombiningTreeOptionPricer()
 {}
 
-double AmericanOptionPricer::GetPrice(boost::function<double(double)> payoff)
+double RecombiningTreeOptionPricer::GetPrice(boost::function<double(double)> payoff)
 {
+    m_treeptr->InitializeTree();
     auto nodes = m_treeptr->GetBreadthFirstNodeValues();
     auto n = m_treeptr->GetLevel();
     auto dt = m_treeptr->GetMaturity()/n;
@@ -45,12 +48,14 @@ double AmericanOptionPricer::GetPrice(boost::function<double(double)> payoff)
         for (auto i = start; i < end; i++,j++)
         {
             
-            std::get<1>(nodes[i]->values) = std::max(1.0, exp(-rf*dt)*(up_prob*std::get<1>(nodes[j]->values) +
+            std::get<1>(nodes[i]->values) = exp(-rf*dt)*(up_prob*std::get<1>(nodes[j]->values) +
                                                              mid_prob*std::get<1>(nodes[j+1]->values) +
-                                                             down_prob*std::get<1>(nodes[j+2]->values)));
+                                                             down_prob*std::get<1>(nodes[j+2]->values));
         }
         
     }
     
     return std::get<1>(nodes[0]->values);
 }
+
+

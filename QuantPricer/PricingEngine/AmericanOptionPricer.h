@@ -10,9 +10,9 @@
 #define __QuantPricer__AmericanOptionPricer__
 
 #include <stdio.h>
-#include "VanillaOptionPricer.h"
+#include "RecombiningTreeOptionPricer.h"
 
-class AmericanOptionPricer : public VanillaOptionPricer
+class AmericanOptionPricer : public RecombiningTreeOptionPricer
 {
 public:
     AmericanOptionPricer(double sigma, double rf, double div, double T);

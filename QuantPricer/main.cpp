@@ -13,12 +13,12 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include "VanillaOptionPricer.h"
-#include "RecombiningTrinomialTree.h"
-#include "BarenblattTrinomialTree.h"
-#include "BarenblattDerivativePricer.h"
-#include "BlackScholesOptionPricer.h"
-#include "OptionPayoffs.h"
+#include "PricingEngine/RecombiningTreeOptionPricer.h"
+#include "FiniteDifferenceMethods/RecombiningTrinomialTree.h"
+#include "FiniteDifferenceMethods/BarenblattTrinomialTree.h"
+#include "PricingEngine/BarenblattDerivativePricer.h"
+#include "PricingEngine/BlackScholesOptionPricer.h"
+#include "Products/Equities/OptionPayoffs.h"
 
 void ComputeCallSpreadBounds()
 {
@@ -30,7 +30,7 @@ void ComputeCallSpreadBounds()
     double sigma_mid = 0.5*(sigma_max+sigma_min);
     double T = 0.5;
     double div = 0.0;
-    double rf = 0.1;
+    double rf = 0.05;
     
     boost::shared_ptr<RecombiningTrinomialTree> tree_sigma_max = boost::make_shared<RecombiningTrinomialTree>(1.0, sigma_max, rf, div, T);
     boost::shared_ptr<RecombiningTrinomialTree> tree_sigma_min = boost::make_shared<RecombiningTrinomialTree>(1.0, sigma_min, rf, div, T);
@@ -39,9 +39,9 @@ void ComputeCallSpreadBounds()
     tree_sigma_max->InitializeTree();
     tree_sigma_min->InitializeTree();
     
-    VanillaOptionPricer option_pricer_max(tree_sigma_max);
-    VanillaOptionPricer option_pricer_min(tree_sigma_min);
-    VanillaOptionPricer option_pricer_mid(tree_sigma_mid);
+    RecombiningTreeOptionPricer option_pricer_max(tree_sigma_max);
+    RecombiningTreeOptionPricer option_pricer_min(tree_sigma_min);
+    RecombiningTreeOptionPricer option_pricer_mid(tree_sigma_mid);
     
     boost::shared_ptr<BarenblattTrinomialTree> bsb_tree = boost::make_shared<BarenblattTrinomialTree>(1.0, sigma_max, sigma_min, rf, div, T, 100.0);
     bsb_tree->InitializeTree();
@@ -87,7 +87,7 @@ void ComputeCalendarSpreadBounds()
     double T_low = 0.5;
     double T_high = 1.0;
     double div = 0.0;
-    double rf = 0.1;
+    double rf = 0.05;
     
     
     std::ofstream bsb_file;
