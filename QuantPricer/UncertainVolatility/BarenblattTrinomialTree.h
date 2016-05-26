@@ -26,6 +26,7 @@ namespace QuantPricer
             double GetSigmaMin() const;
             double GetNodeProbLB() const;
             double GetNodeProbUB() const;
+            virtual int GetNodeStartFromTimeStep(double time_step);
             
         protected:
             void ComputeAssetPriceFactors();

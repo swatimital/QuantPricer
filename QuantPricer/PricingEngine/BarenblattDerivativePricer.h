@@ -25,7 +25,7 @@ namespace QuantPricer
             BarenblattDerivativePricer(TreePtr ptr);
             
             virtual Equities::BarenblattDerivative GetPrice(boost::function<double(double)> payoff);
-            
+            virtual Equities::BarenblattDerivative GetPrice(std::vector<std::pair<double, boost::function<double(double)>>> payoffs);
         };
 
     }

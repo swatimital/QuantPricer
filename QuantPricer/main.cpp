@@ -9,6 +9,7 @@
 #include <iostream>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
+#include <boost/optional/optional_io.hpp>
 #include <map>
 #include <vector>
 #include <iostream>
@@ -63,22 +64,22 @@ void ComputeCallSpreadBounds()
     
     double K_low = 90.0;
     double K_high = 100.0;
-    bsb_file << "Stock Price, Call Spread UB, Call Spread LB, Call Spread MID, BSB Call Spread UB, BSB Call Spread LB\n";
+    bsb_file << "Stock Price, Call Spread UB, Call Spread LB, Call Spread MID, BSB Call Spread UB, BSB Call Spread LB, Gamma\n";
     
     for (auto S = 0; S < stock_prices.size(); S++)
     {
-        double price_1 = option_pricer_max.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1, stock_prices[S], K_low));
-        double price_2 = option_pricer_min.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1, stock_prices[S], K_high));
+        double price_1 = option_pricer_max.GetPrice(boost::bind(OptionPayoffs::LongVanillaCallOption, _1, stock_prices[S], K_low));
+        double price_2 = option_pricer_min.GetPrice(boost::bind(OptionPayoffs::LongVanillaCallOption, _1, stock_prices[S], K_high));
         
-        double price_3 = option_pricer_min.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1, stock_prices[S], K_low));
-        double price_4 = option_pricer_max.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1,stock_prices[S], K_high));
+        double price_3 = option_pricer_min.GetPrice(boost::bind(OptionPayoffs::LongVanillaCallOption, _1, stock_prices[S], K_low));
+        double price_4 = option_pricer_max.GetPrice(boost::bind(OptionPayoffs::LongVanillaCallOption, _1,stock_prices[S], K_high));
         
-        double price_5 = option_pricer_mid.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1,stock_prices[S], K_low));
-        double price_6 = option_pricer_mid.GetPrice(boost::bind(OptionPayoffs::VanillaCallOption, _1,stock_prices[S], K_high));
+        double price_5 = option_pricer_mid.GetPrice(boost::bind(OptionPayoffs::LongVanillaCallOption, _1,stock_prices[S], K_low));
+        double price_6 = option_pricer_mid.GetPrice(boost::bind(OptionPayoffs::LongVanillaCallOption, _1,stock_prices[S], K_high));
         
         BarenblattDerivative bsb_prices = bsb_pricer.GetPrice(boost::bind(OptionPayoffs::BullCallSpread, _1,stock_prices[S], K_low, K_high));
        
-        bsb_file << stock_prices[S] << "," << price_1-price_2 << "," << price_3-price_4 << "," << price_5-price_6 << "," << std::get<0>(bsb_prices.value) << "," << std::get<1>(bsb_prices.value) <<  "\n";
+        bsb_file << stock_prices[S] << "," << price_1-price_2 << "," << price_3-price_4 << "," << price_5-price_6 << "," << std::get<0>(bsb_prices.value) << "," << std::get<1>(bsb_prices.value) <<  "," << bsb_prices.greeks->gamma << "\n";
     }
     
     bsb_file.close();
@@ -97,16 +98,13 @@ void ComputeCalendarSpreadBounds()
     
     std::ofstream bsb_file;
     bsb_file.open("/Users/swatimital/GitHub/QuantPricer/Results/CalendarSpreadBounds.csv");
+
+    boost::shared_ptr<BarenblattTrinomialTree> bsb_tree = boost::make_shared<BarenblattTrinomialTree>(1.0, sigma_max, sigma_min, rf, div, T_high, 100.0);
+
+    bsb_tree->InitializeTree();
     
-    boost::shared_ptr<BarenblattTrinomialTree> bsb_tree_T_low = boost::make_shared<BarenblattTrinomialTree>(1.0, sigma_max, sigma_min, rf, div, T_low, 100.0);
-    boost::shared_ptr<BarenblattTrinomialTree> bsb_tree_T_high = boost::make_shared<BarenblattTrinomialTree>(1.0, sigma_max, sigma_min, rf, div, T_high, 100.0);
-    
-    bsb_tree_T_low->InitializeTree();
-    bsb_tree_T_high->InitializeTree();
-    
-    BarenblattDerivativePricer bsb_pricer_T_high(bsb_tree_T_high);
-    BarenblattDerivativePricer bsb_pricer_T_low(bsb_tree_T_low);
-    
+    BarenblattDerivativePricer bsb_pricer(bsb_tree);
+
     int num_stocks = 200/5;
     std::vector<double> stock_prices;
     stock_prices.push_back(5.0);
@@ -119,6 +117,8 @@ void ComputeCalendarSpreadBounds()
     double K_high = 100.0;
     bsb_file << "Stock Price, Call Spread UB, Call Spread LB, Call Spread MID, BSB Call Spread UB, BSB Call Spread LB\n";
     
+    
+    
     for (auto S = 0; S < stock_prices.size(); S++)
     {
         double price_1 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_low, 0, T_high, sigma_max, rf, div);
@@ -130,10 +130,13 @@ void ComputeCalendarSpreadBounds()
         double price_5 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_low, 0, T_high, sigma_mid, rf, div);
         double price_6 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_high, 0, T_low, sigma_mid, rf, div);
         
-        //BarenblattDerivative bsb_prices = bsb_pricer.GetPrice();
-
+        std::vector<std::pair<double, boost::function<double(double)>>> payoffs;
+        payoffs.push_back(std::make_pair(T_low, boost::bind(OptionPayoffs::ShortVanillaCallOption, _1,stock_prices[S], K_high)));
+        payoffs.push_back(std::make_pair(T_high, boost::bind(OptionPayoffs::LongVanillaCallOption, _1,stock_prices[S], K_low)));
         
-        bsb_file << stock_prices[S] << "," << price_1-price_2 << "," << price_3-price_4 << "," << price_5-price_6 << "\n";
+        BarenblattDerivative bsb_prices = bsb_pricer.GetPrice(payoffs);
+        
+        bsb_file << stock_prices[S] << "," << price_1-price_2 << "," << price_3-price_4 << "," << price_5-price_6 << "," << std::get<0>(bsb_prices.value) << "," << std::get<1>(bsb_prices.value) << "\n";
     }
     
     bsb_file.close();

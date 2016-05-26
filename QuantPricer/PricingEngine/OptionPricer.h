@@ -26,6 +26,7 @@ namespace QuantPricer
             OptionPricer() {};
             virtual ~OptionPricer() {};
             virtual DerivativeT GetPrice(boost::function<double(double)> payoff) = 0;
+            virtual DerivativeT GetPrice(std::vector<std::pair<double, boost::function<double(double)>>> payoffs) = 0;
             
         protected:
             TreePtr m_treeptr;

@@ -29,6 +29,12 @@ namespace QuantPricer
             }
         }
         
+        int RecombiningTrinomialTree::GetNodeStartFromTimeStep(double time_step)
+        {
+            int n = (int)(time_step/m_dt);
+            return n*n;
+        }
+        
         
         boost::shared_ptr<Node<double, double>> RecombiningTrinomialTree::BuildUnderlyingTree(double val, NodeDir ndir, int tree_level)
         {

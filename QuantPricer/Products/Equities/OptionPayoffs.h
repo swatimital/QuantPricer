@@ -13,14 +13,24 @@
 
 namespace OptionPayoffs {
    
-    inline double VanillaCallOption(double prop_ST, double St, double K)
+    inline double LongVanillaCallOption(double prop_ST, double St, double K)
     {
         return std::max<double>(prop_ST*St - K, 0);
     }
     
-    inline double VanillaPutOption(double prop_ST, double St, double K)
+    inline double ShortVanillaCallOption(double prop_ST, double St, double K)
+    {
+        return -1.0*LongVanillaCallOption(prop_ST, St, K);
+    }
+    
+    inline double LongVanillaPutOption(double prop_ST, double St, double K)
     {
         return std::max<double>(K - prop_ST*St, 0);
+    }
+    
+    inline double ShortVanillaPutOption(double prop_ST, double St, double K)
+    {
+        return -1.0*LongVanillaPutOption(prop_ST, St, K);
     }
     
     inline double BullCallSpread(double prop_ST, double St, double K_low, double K_high)

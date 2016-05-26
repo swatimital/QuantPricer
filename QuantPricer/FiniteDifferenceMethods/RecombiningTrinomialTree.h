@@ -21,6 +21,7 @@ namespace QuantPricer
         public:
             RecombiningTrinomialTree(double S0, double sigma, double rf, double dividend, double T, double steps=100.0);
             virtual void InitializeTree();
+            virtual int GetNodeStartFromTimeStep(double time_step);
             
         protected:
             virtual boost::shared_ptr<Node<double, double>> BuildUnderlyingTree(double val, NodeDir ndir, int tree_level);

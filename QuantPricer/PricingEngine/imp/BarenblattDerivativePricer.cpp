@@ -8,6 +8,7 @@
 
 #include "BarenblattDerivativePricer.h"
 #include "BarenblattTrinomialTree.h"
+#include <map>
 
 namespace QuantPricer
 {
@@ -25,10 +26,16 @@ namespace QuantPricer
             m_treeptr = ptr;
         }
         
-        Equities::BarenblattDerivative BarenblattDerivativePricer::GetPrice(boost::function<double(double)> payoff)
+        Equities::BarenblattDerivative BarenblattDerivativePricer::GetPrice(std::vector<std::pair<double, boost::function<double(double)>>> payoffs)
         {
             auto m_bb_treeptr = boost::dynamic_pointer_cast<UncertainVolatility::BarenblattTrinomialTree>(m_treeptr);
             m_bb_treeptr->InitializeTree();
+            
+            std::map<int, boost::function<double(double)>> starttime_payoff_map;
+            for (int j = 0; j < payoffs.size(); j++)
+            {
+                starttime_payoff_map.insert(std::make_pair(m_bb_treeptr->GetNodeStartFromTimeStep(payoffs[j].first), payoffs[j].second));
+            }
             
             auto nodes = m_treeptr->GetBreadthFirstNodeValues();
             auto n = m_bb_treeptr->GetLevel();
@@ -39,11 +46,13 @@ namespace QuantPricer
             auto start = nodes.size() - (2*n+1);
             auto p_lb = m_bb_treeptr->GetNodeProbLB();
             auto p_ub = m_bb_treeptr->GetNodeProbUB();
+            auto map_it = starttime_payoff_map.find(start);
+            
             // Set the option values on the leaf nodes
             for (auto i = start; i < end; i++)
             {
                 Equities::BarenblattDerivative& option_bounds = std::get<1>(nodes[i]->values);
-                std::get<0>(option_bounds.value) = payoff(std::get<0>(nodes[i]->values));
+                std::get<0>(option_bounds.value) = (map_it != starttime_payoff_map.end()) ? map_it->second(std::get<0>(nodes[i]->values)) : 0.0;
                 std::get<1>(option_bounds.value) = std::get<0>(option_bounds.value);
             }
             
@@ -52,6 +61,8 @@ namespace QuantPricer
                 end = start;
                 start = start - (2*(--n)+1);
                 auto j = end;
+                auto map_it = starttime_payoff_map.find(start);
+
                 for (auto i = start; i < end; i++,j++)
                 {
                     Equities::BarenblattDerivative& option_bounds = std::get<1>(nodes[i]->values);
@@ -63,10 +74,16 @@ namespace QuantPricer
                     
                     auto gamma1 = (1 - (sigma_max*sqrt(dt)*0.5)) * std::get<1>(next_up.value) + (1 + (sigma_max*sqrt(dt)*0.5)) * std::get<1>(next_down.value) - 2.0*std::get<1>(next_mid.value);
                     
-                    std::get<0>(option_bounds.value) = (gamma0 >= 0) ? exp(-rf*dt)*(std::get<0>(next_mid.value) + p_ub*gamma0) :
-                    exp(-rf*dt)*(std::get<0>(next_mid.value) + p_lb*gamma0);
+                    auto cashflow = 0.0;
+                    if (map_it != starttime_payoff_map.end())
+                    {
+                        cashflow = map_it->second(std::get<0>(nodes[i]->values));
+                    }
                     
-                    std::get<1>(option_bounds.value) = (gamma1 < 0) ? exp(-rf*dt)*(std::get<1>(next_mid.value) + p_ub*gamma1) :exp(-rf*dt)*(std::get<1>(next_mid.value) + p_lb*gamma1);
+                    std::get<0>(option_bounds.value) = cashflow + ((gamma0 >= 0) ? exp(-rf*dt)*(std::get<0>(next_mid.value) + p_ub*gamma0) :
+                    exp(-rf*dt)*(std::get<0>(next_mid.value) + p_lb*gamma0));
+                    
+                    std::get<1>(option_bounds.value) = cashflow + ((gamma1 < 0) ? exp(-rf*dt)*(std::get<1>(next_mid.value) + p_ub*gamma1) :exp(-rf*dt)*(std::get<1>(next_mid.value) + p_lb*gamma1));
                     
                     option_bounds.greeks = Equities::Greeks();
                     option_bounds.greeks->gamma = gamma0;
@@ -75,6 +92,13 @@ namespace QuantPricer
             
             return std::get<1>(nodes[0]->values);
             
+        }
+        
+        Equities::BarenblattDerivative BarenblattDerivativePricer::GetPrice(boost::function<double(double)> payoff)
+        {
+            std::vector<std::pair<double, boost::function<double(double)>>> payoffs;
+            payoffs.push_back(std::make_pair(m_treeptr->GetMaturity(), payoff));
+            return GetPrice(payoffs);
         }
     }
 }

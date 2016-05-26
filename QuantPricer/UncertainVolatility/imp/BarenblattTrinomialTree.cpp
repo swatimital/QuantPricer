@@ -49,6 +49,12 @@ namespace QuantPricer
         double BarenblattTrinomialTree::GetSigmaMax() const { return m_sigma_max; }
         double BarenblattTrinomialTree::GetSigmaMin() const { return m_sigma_min; }
         
+        int BarenblattTrinomialTree::GetNodeStartFromTimeStep(double time_step)
+        {
+            int n = (int)(time_step/m_dt);
+            return n*n;
+        }
+        
         boost::shared_ptr<FiniteDiffMethods::Node<double, Equities::BarenblattDerivative>> BarenblattTrinomialTree::BuildUnderlyingTree(double val, NodeDir ndir, int tree_level)
         {
             boost::shared_ptr<FiniteDiffMethods::Node<double, Equities::BarenblattDerivative>> nd;

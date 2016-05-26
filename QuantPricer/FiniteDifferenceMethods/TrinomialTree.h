@@ -81,6 +81,8 @@ namespace QuantPricer
             
             virtual ~TrinomialTree() {}
             
+            virtual int GetNodeStartFromTimeStep(double time_step) = 0;
+            
         protected:
             virtual void BreadthFirstTraversal(boost::shared_ptr<Node<UnderlyingT, DerivativeT>> nd)
             {

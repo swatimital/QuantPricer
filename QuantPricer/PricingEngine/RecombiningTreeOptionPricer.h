@@ -24,6 +24,7 @@ namespace QuantPricer
             RecombiningTreeOptionPricer(TreePtr treeptr);
             virtual ~RecombiningTreeOptionPricer();
             virtual double GetPrice(boost::function<double(double)> payoff);
+            virtual double GetPrice(std::vector<std::pair<double, boost::function<double(double)>>> payoffs);
         };
     }
 }
