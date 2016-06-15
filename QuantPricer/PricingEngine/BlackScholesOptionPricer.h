@@ -49,6 +49,11 @@ namespace QuantPricer
                 double d2 = d1 - sigma*sqrt(T-t);
                 return (call ? (St*Phi(d1) - exp(-rf*(T-t))*K*Phi(d2)) : (exp(-rf*(T-t))*K*Phi(-d2) - St*Phi(-d1)));
             }
+            
+            inline double BSDelta(double St, double K, double t, double T, double sigma, double rf, double div, bool call=true)
+            {
+                return 1.0;
+            }
         }
     }
 }

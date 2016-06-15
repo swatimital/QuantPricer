@@ -1,6 +1,6 @@
 
 
-filename <- "CallPriceBounds.csv"
+filename <- "CallBounds.csv"
 foldername <- "/Users/swatimital/GitHub/QuantPricer/Results/"
 price.bounds.file <- paste(foldername, filename, sep="")
 data <- read.csv(price.bounds.file, TRUE, sep=",")
@@ -8,7 +8,7 @@ stock_prices <- as.vector(t(data[,1]))
 line.col <- c('red', 'green', 'blue', 'purple', 'pink', 'black')
 
 par(lwd=2,cex=1.0)
-plot(data[,1], data[,2], type='l', lty=2, col=line.col[1], ylim = c(-4,15), xlab='Stock Prices', ylab='Call Spread Prices', main='Bull Call Spread Prices')
+plot(data[,1], data[,2], type='l', lty=2, col=line.col[1], ylim = c(-4,100), xlab='Stock Prices', ylab='Call Spread Prices', main='Bull Call Spread Prices')
 #axis(side=1, at=seq(0, 200, by=20.0), pos=-0.1)
 #axis(side=2, at=seq(-4, 15, by=2.0))
 

@@ -17,10 +17,13 @@ namespace QuantPricer
 {
     namespace UncertainVolatility
     {
-        class BarenblattTrinomialTree : public FiniteDiffMethods::TrinomialTree<double, Equities::BarenblattDerivative>
+        class BarenblattTrinomialTree : public FiniteDiffMethods::TrinomialTree
+        <double, Equities::BarenblattDerivative>
         {
         public:
-            BarenblattTrinomialTree(double S0, double sigma_max, double sigma_min, double rf, double dividend, double T, double steps);
+            BarenblattTrinomialTree(double S0, double sigma_max,
+                                    double sigma_min, double rf, double dividend,
+                                    double T, double steps);
             virtual void InitializeTree();
             double GetSigmaMax() const;
             double GetSigmaMin() const;
@@ -30,7 +33,9 @@ namespace QuantPricer
             
         protected:
             void ComputeAssetPriceFactors();
-            virtual boost::shared_ptr<FiniteDiffMethods::Node<double, Equities::BarenblattDerivative>> BuildUnderlyingTree(double val, NodeDir ndir, int tree_level);
+            virtual boost::shared_ptr<FiniteDiffMethods::Node<double,
+            Equities::BarenblattDerivative>>
+            BuildUnderlyingTree(double val, NodeDir ndir, int tree_level);
             
         private:
             double m_sigma_max;
