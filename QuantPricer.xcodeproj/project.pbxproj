@@ -69,6 +69,7 @@
 		3A2B346A1D0FC784003822EB /* libfftw3f.la */ = {isa = PBXFileReference; lastKnownFileType = text; name = libfftw3f.la; path = "lib/fftw-3.3.4/bin/libfftw3f.la"; sourceTree = "<group>"; };
 		3A4839A61D11DE0D00FCF801 /* VarianceGammaMethod.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VarianceGammaMethod.cpp; sourceTree = "<group>"; };
 		3A4839A71D11DE0D00FCF801 /* VarianceGammaMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VarianceGammaMethod.h; sourceTree = "<group>"; };
+		3A4839AA1D1337DC00FCF801 /* MemoryManagement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryManagement.h; sourceTree = "<group>"; };
 		3A72159A1C8CE61D000FE88F /* QuantPricer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = QuantPricer; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AA94B3A1CDCED7C004D032A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -218,6 +219,14 @@
 			path = imp;
 			sourceTree = "<group>";
 		};
+		3A4839A91D1337C800FCF801 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				3A4839AA1D1337DC00FCF801 /* MemoryManagement.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
 		3A7215911C8CE61D000FE88F = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +253,7 @@
 		3A72159C1C8CE61D000FE88F /* QuantPricer */ = {
 			isa = PBXGroup;
 			children = (
+				3A4839A91D1337C800FCF801 /* common */,
 				3A4839A41D11DE0D00FCF801 /* FFTOptionPricing */,
 				3A2B345F1D0E7ADE003822EB /* FFT */,
 				3A28A5261CF399F3002D389B /* UncertainVolatility */,

@@ -10,6 +10,7 @@
 #define __QuantPricer__VarianceGammaMethod__
 
 #include <stdio.h>
+#include <complex>
 
 namespace QuantPricer
 {

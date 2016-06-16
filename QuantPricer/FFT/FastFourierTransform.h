@@ -10,7 +10,10 @@
 #define __QuantPricer__FastFourierTransform__
 
 #include <stdio.h>
-
+#include <fftw3.h>
+#include <memory>
+#include <complex>
+#include <vector>
 
 
 namespace QuantPricer
@@ -20,7 +23,20 @@ namespace QuantPricer
         class FastFourierTransform
         {
         public:
+            FastFourierTransform(int idx);
+            virtual ~FastFourierTransform();
             
+            void Initialize();
+            std::vector<std::complex<double>> Execute(const std::vector<std::complex<double>>& in);
+            int GetFFTArrayLength() const {return m_indices;}
+            
+        private:
+            //std::shared_ptr<fftw_complex> m_in;
+            //std::shared_ptr<fftw_complex> m_out;
+            fftw_complex* m_in;
+            fftw_complex* m_out;
+            fftw_plan m_fftw_plan;
+            int m_indices;
         };
     }
 }
