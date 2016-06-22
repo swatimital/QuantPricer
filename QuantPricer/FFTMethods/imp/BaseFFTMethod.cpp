@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include "BaseFFTMethod.h"
+#include <utility>
 
 namespace QuantPricer
 {
@@ -36,11 +37,53 @@ namespace QuantPricer
 
         }
         
+        std::vector<std::pair<double, double>> BaseFFTMethod::FFTCallPrices(boost::function<std::complex<double>(std::complex<double>)> characteristic_fn) const
+        {
+            std::vector<std::complex<double>> fft_out = FFTOutputVector(characteristic_fn);
+            double N = m_fft_transform->GetFFTArrayLength();
+            double lambda = (2*M_PI)/(N*m_fft_eta);
+            double b = 0.5*N*lambda;
+            double ku = -b;
+            
+            std::vector<std::pair<double, double>> call_prices(N);
+            
+            for (int i = 0; i < N; i++)
+            {
+                call_prices[i] = std::make_pair(ku, exp(-m_alpha*ku/M_PI)*fft_out[i].real());
+                ku += lambda;
+            }
+            
+            return call_prices;
+        }
+        
+        std::vector<std::complex<double>> BaseFFTMethod::FFTOutputVector(boost::function<std::complex<double>(std::complex<double>)> characteristic_fn) const
+        {
+            return (m_fft_transform->Execute(PopulateInputVector(characteristic_fn)));
+        }
         
         std::vector<std::complex<double>> BaseFFTMethod::FFTOutputVector(std::vector<std::complex<double>> in) const
         {
             return (m_fft_transform->Execute(in));
         }
+        
+        std::vector<std::complex<double>> BaseFFTMethod::PopulateInputVector(boost::function<std::complex<double>(std::complex<double>)> characteristic_fn) const
+        {
+            int N = m_fft_transform->GetFFTArrayLength();
+            std::vector<std::complex<double>> in_vector(N);
+            
+            double lambda = (2*M_PI)/(N*m_fft_eta);
+            double b = 0.5*N*lambda;
+            double nu;
+            for (int i = 0; i < N; i++)
+            {
+                nu = i*m_fft_eta;
+                std::complex<double> zhi = ZhiFunction(nu, characteristic_fn);
+                in_vector[i] = exp(std::complex<double>(0,1)*nu*b)*m_fft_eta*zhi;
+            }
+            
+            return in_vector;
+        }
+
         
     }
 }

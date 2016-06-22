@@ -9,16 +9,16 @@
 #ifndef __QuantPricer__VarianceGammaMethod__
 #define __QuantPricer__VarianceGammaMethod__
 
-#include "BaseFFTMethod.h"
+#include "ICharacteristicFunctionMethod.h"
 #include <vector>
 #include <complex>
 
 
 namespace QuantPricer
 {
-    namespace FFTMethods
+    namespace CharacteristicFunctionMethods
     {
-        class VarianceGammaMethod : public BaseFFTMethod
+        class VarianceGammaMethod : public ICharacteristicFunctionMethod
         {
         public:
             VarianceGammaMethod(double theta, double sigma,
@@ -28,14 +28,12 @@ namespace QuantPricer
             virtual ~VarianceGammaMethod() {}
             std::complex<double> CharacteristicFunction(std::complex<double> u);
         
-        protected:
-            std::vector<std::complex<double>> PopulateInputVector() const;
-            
         private:
             double m_theta;
             double m_sigma;
             double m_var_rate;
             double m_St;
+            double m_rf_rate, m_time_to_maturity, m_dividend;
         };
     }
 }

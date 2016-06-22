@@ -23,9 +23,14 @@ namespace QuantPricer
         public:
             BaseFFTMethod(double rf_rate, double dividend, double time_to_maturity);
             virtual ~BaseFFTMethod() {};
+            virtual std::vector<std::pair<double, double>> FFTCallPrices(boost::function<std::complex<double>(std::complex<double>)> characteristic_fn) const;
+            
+        protected:
             virtual std::complex<double> ZhiFunction(double u,
                                                      boost::function<std::complex<double>(std::complex<double>)> characteristic_fn) const;
+            virtual std::vector<std::complex<double>> FFTOutputVector(boost::function<std::complex<double>(std::complex<double>)> characteristic_fn) const;
             virtual std::vector<std::complex<double>> FFTOutputVector(std::vector<std::complex<double>> in) const;
+            virtual std::vector<std::complex<double>> PopulateInputVector(boost::function<std::complex<double>(std::complex<double>)> characteristic_fn) const;
             
         protected:
             double m_fft_N;

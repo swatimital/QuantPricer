@@ -20,8 +20,9 @@
 		3A2B346D1D0FC784003822EB /* libfftw3f_threads.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A2B34671D0FC784003822EB /* libfftw3f_threads.a */; };
 		3A2B346F1D0FC784003822EB /* libfftw3f.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A2B34691D0FC784003822EB /* libfftw3f.a */; };
 		3AA94B3B1CDCED7C004D032A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AA94B3A1CDCED7C004D032A /* main.cpp */; };
-		3AE059911D18FF820093C97C /* BaseFFTMethod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0598E1D18FF820093C97C /* BaseFFTMethod.cpp */; };
-		3AE059921D18FF820093C97C /* VarianceGammaMethod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0598F1D18FF820093C97C /* VarianceGammaMethod.cpp */; };
+		3AE059971D1904620093C97C /* FFTOptionPricer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AE059961D1904620093C97C /* FFTOptionPricer.cpp */; };
+		3AE0599D1D19C9730093C97C /* BaseFFTMethod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0599C1D19C9730093C97C /* BaseFFTMethod.cpp */; };
+		3AE059A31D19C97E0093C97C /* VarianceGammaMethod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AE059A11D19C97E0093C97C /* VarianceGammaMethod.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -71,10 +72,13 @@
 		3A4839AA1D1337DC00FCF801 /* MemoryManagement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryManagement.h; sourceTree = "<group>"; };
 		3A72159A1C8CE61D000FE88F /* QuantPricer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = QuantPricer; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AA94B3A1CDCED7C004D032A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		3AE0598C1D18FF820093C97C /* BaseFFTMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFFTMethod.h; sourceTree = "<group>"; };
-		3AE0598E1D18FF820093C97C /* BaseFFTMethod.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseFFTMethod.cpp; sourceTree = "<group>"; };
-		3AE0598F1D18FF820093C97C /* VarianceGammaMethod.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VarianceGammaMethod.cpp; sourceTree = "<group>"; };
-		3AE059901D18FF820093C97C /* VarianceGammaMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VarianceGammaMethod.h; sourceTree = "<group>"; };
+		3AE059941D1903ED0093C97C /* FFTOptionPricer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFTOptionPricer.h; sourceTree = "<group>"; };
+		3AE059961D1904620093C97C /* FFTOptionPricer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FFTOptionPricer.cpp; sourceTree = "<group>"; };
+		3AE0599A1D19C9730093C97C /* BaseFFTMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseFFTMethod.h; sourceTree = "<group>"; };
+		3AE0599C1D19C9730093C97C /* BaseFFTMethod.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseFFTMethod.cpp; sourceTree = "<group>"; };
+		3AE0599F1D19C97E0093C97C /* ICharacteristicFunctionMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICharacteristicFunctionMethod.h; sourceTree = "<group>"; };
+		3AE059A11D19C97E0093C97C /* VarianceGammaMethod.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VarianceGammaMethod.cpp; sourceTree = "<group>"; };
+		3AE059A21D19C97E0093C97C /* VarianceGammaMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VarianceGammaMethod.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +161,7 @@
 				3A28A5171CF378D7002D389B /* imp */,
 				3A28A51B1CF378D7002D389B /* OptionPricer.h */,
 				3A28A51C1CF378D7002D389B /* RecombiningTreeOptionPricer.h */,
+				3AE059941D1903ED0093C97C /* FFTOptionPricer.h */,
 			);
 			path = PricingEngine;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 		3A28A5171CF378D7002D389B /* imp */ = {
 			isa = PBXGroup;
 			children = (
+				3AE059961D1904620093C97C /* FFTOptionPricer.cpp */,
 				3A28A5181CF378D7002D389B /* AmericanOptionPricer.cpp */,
 				3A28A5191CF378D7002D389B /* BarenblattDerivativePricer.cpp */,
 				3A28A51A1CF378D7002D389B /* RecombiningTreeOptionPricer.cpp */,
@@ -239,7 +245,8 @@
 		3A72159C1C8CE61D000FE88F /* QuantPricer */ = {
 			isa = PBXGroup;
 			children = (
-				3AE0598B1D18FF820093C97C /* FFTMethods */,
+				3AE0599E1D19C97E0093C97C /* CharacteristicFunctionMethods */,
+				3AE059991D19C9730093C97C /* FFTMethods */,
 				3A4839A91D1337C800FCF801 /* common */,
 				3A2B345F1D0E7ADE003822EB /* FFT */,
 				3A28A5261CF399F3002D389B /* UncertainVolatility */,
@@ -252,21 +259,37 @@
 			path = QuantPricer;
 			sourceTree = "<group>";
 		};
-		3AE0598B1D18FF820093C97C /* FFTMethods */ = {
+		3AE059991D19C9730093C97C /* FFTMethods */ = {
 			isa = PBXGroup;
 			children = (
-				3AE0598C1D18FF820093C97C /* BaseFFTMethod.h */,
-				3AE0598D1D18FF820093C97C /* imp */,
-				3AE059901D18FF820093C97C /* VarianceGammaMethod.h */,
+				3AE0599A1D19C9730093C97C /* BaseFFTMethod.h */,
+				3AE0599B1D19C9730093C97C /* imp */,
 			);
 			path = FFTMethods;
 			sourceTree = "<group>";
 		};
-		3AE0598D1D18FF820093C97C /* imp */ = {
+		3AE0599B1D19C9730093C97C /* imp */ = {
 			isa = PBXGroup;
 			children = (
-				3AE0598E1D18FF820093C97C /* BaseFFTMethod.cpp */,
-				3AE0598F1D18FF820093C97C /* VarianceGammaMethod.cpp */,
+				3AE0599C1D19C9730093C97C /* BaseFFTMethod.cpp */,
+			);
+			path = imp;
+			sourceTree = "<group>";
+		};
+		3AE0599E1D19C97E0093C97C /* CharacteristicFunctionMethods */ = {
+			isa = PBXGroup;
+			children = (
+				3AE0599F1D19C97E0093C97C /* ICharacteristicFunctionMethod.h */,
+				3AE059A01D19C97E0093C97C /* imp */,
+				3AE059A21D19C97E0093C97C /* VarianceGammaMethod.h */,
+			);
+			path = CharacteristicFunctionMethods;
+			sourceTree = "<group>";
+		};
+		3AE059A01D19C97E0093C97C /* imp */ = {
+			isa = PBXGroup;
+			children = (
+				3AE059A11D19C97E0093C97C /* VarianceGammaMethod.cpp */,
 			);
 			path = imp;
 			sourceTree = "<group>";
@@ -328,16 +351,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A21E0571CE8B24F008F150F /* TrinomialTreeTest.cpp in Sources */,
-				3AE059921D18FF820093C97C /* VarianceGammaMethod.cpp in Sources */,
 				3AA94B3B1CDCED7C004D032A /* main.cpp in Sources */,
 				3A28A52B1CF399F3002D389B /* BarenblattTrinomialTree.cpp in Sources */,
-				3AE059911D18FF820093C97C /* BaseFFTMethod.cpp in Sources */,
 				3A28A51E1CF378D7002D389B /* BarenblattDerivativePricer.cpp in Sources */,
+				3AE059A31D19C97E0093C97C /* VarianceGammaMethod.cpp in Sources */,
 				3A28A51F1CF378D7002D389B /* RecombiningTreeOptionPricer.cpp in Sources */,
 				3A2B34631D0E7ADE003822EB /* FastFourierTransform.cpp in Sources */,
 				3A28A5001CF3772E002D389B /* RecombiningTrinomialTree.cpp in Sources */,
+				3AE059971D1904620093C97C /* FFTOptionPricer.cpp in Sources */,
 				3A28A52F1CF566ED002D389B /* CrankNicolsonMethod.cpp in Sources */,
 				3A28A4FF1CF3772E002D389B /* NonRecombiningTrinomialTree.cpp in Sources */,
+				3AE0599D1D19C9730093C97C /* BaseFFTMethod.cpp in Sources */,
 				3A28A51D1CF378D7002D389B /* AmericanOptionPricer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
