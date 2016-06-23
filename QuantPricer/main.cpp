@@ -9,23 +9,52 @@
 
 #include "OptionPriceBounds.h"
 #include "fftw3.h"
+#include "FFT/FastFourierTransform.h"
 
+using namespace std;
+
+
+#include <iostream>
+#include <stdlib.h>
+#include <math.h>
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
+#include "FFTMethods/BaseFFTMethod.h"
+#include "CharacteristicFunctionMethods/VarianceGammaMethod.h"
+#include "PricingEngine/FFTOptionPricer.h"
+
+using namespace QuantPricer::FFTMethods;
+using namespace QuantPricer::CharacteristicFunctionMethods;
+using namespace QuantPricer::PricingEngine;
+using namespace QuantPricer::FFT;
 using namespace std;
 
 int main(int argc, const char * argv[])
 {
-    int N = 10;
-    fftw_complex *in, *out;
-    in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
-    out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
+    double rf = 0.01;
+    double q = 0.0;
     
+    double T = 1.0;
+    double St = 110.0;
+    double K = 111;
     
+    double sigma = 0.5;
+    double nu = 0.5;
+    double theta = -0.2;
     
-    fftw_plan p;
-    p = fftw_plan_dft_1d(N, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
-    fftw_execute(p);
-    fftw_destroy_plan(p);
+    boost::shared_ptr<BaseFFTMethod> fft_method(new BaseFFTMethod(rf,q,T));
+    boost::shared_ptr<VarianceGammaMethod> vg_method(new VarianceGammaMethod(theta, sigma,
+                                                                             nu, St,
+                                                                             rf,q,T));
+    boost::shared_ptr<FFTOptionPricer> fft_option_pricer(new FFTOptionPricer());
     
+    double price = fft_option_pricer->GetCallPrice(K, vg_method, fft_method);
+    
+    double bs_price = BlackScholesOptionPricer::BSPrice(St, K, 0, T, sigma, rf, q);
+    
+    std::cout << "Variance Gamma Call price is: " << price << std::endl;
+    std::cout << "Black Scholes Option price is: " << bs_price << std::endl;
+        
     QuantPricer::OptionPriceBounds::ComputeCallSpreadBounds();
     QuantPricer::OptionPriceBounds::ComputeCalendarSpreadBounds();
     QuantPricer::OptionPriceBounds::ComputeCallPricesAsFunctionOfK();

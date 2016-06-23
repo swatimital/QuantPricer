@@ -19,8 +19,8 @@ namespace QuantPricer
             m_dividend(dividend),
             m_rf_rate(rf_rate),
             m_fft_eta(0.01),
-            m_fft_N(20),
-            m_alpha(1.1),
+            m_fft_N(15),
+            m_alpha(1.65),
             m_fft_transform(new FFT::FastFourierTransform(m_fft_N))
         {
             m_fft_transform->Initialize();
@@ -49,7 +49,7 @@ namespace QuantPricer
             
             for (int i = 0; i < N; i++)
             {
-                call_prices[i] = std::make_pair(ku, exp(-m_alpha*ku/M_PI)*fft_out[i].real());
+                call_prices[i] = std::make_pair(exp(ku), exp(-m_alpha*ku)*fft_out[i].real()/M_PI);
                 ku += lambda;
             }
             

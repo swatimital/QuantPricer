@@ -21,8 +21,8 @@ namespace QuantPricer
         class FFTOptionPricer
         {
         public:
-            FFTOptionPricer();
-            virtual ~FFTOptionPricer();
+            FFTOptionPricer() {};
+            virtual ~FFTOptionPricer() {};
             double LinearInterpolateStrike(
                     double K, std::vector<std::pair<double, double>> strike_call_pairs);
             double GetCallPrice(double K,

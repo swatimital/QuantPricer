@@ -18,12 +18,10 @@ namespace QuantPricer
         {
             size_t n = strike_call_pairs.size();
             
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < n-1; i++)
             {
-                if(K > strike_call_pairs[i].first)
+                if(K > strike_call_pairs[i].first && K <= strike_call_pairs[i+1].first)
                 {
-                    if (i == (n-1)) return strike_call_pairs[i].second;
-                        
                     double K1 = strike_call_pairs[i].first;
                     double K2 = strike_call_pairs[i+1].first;
                     double C1 = strike_call_pairs[i].second;
