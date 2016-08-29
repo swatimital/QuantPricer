@@ -33,7 +33,7 @@ namespace QuantPricer
             double omega = (1/m_var_rate) * log(1-m_theta*m_var_rate - 0.5*m_sigma*m_sigma*m_var_rate);
             std::complex<double> power_term = pow(real - img*m_theta*m_var_rate*u + real*0.5*m_sigma*m_sigma*u*u*m_var_rate, -m_time_to_maturity/m_var_rate);
             
-            return( exp(u*img*log(m_St) + u*img*(m_rf_rate - m_dividend + omega)*m_time_to_maturity)*power_term );
+            return(exp(log(m_St) + (m_rf_rate - m_dividend + omega)*m_time_to_maturity)*power_term);
         }
         
     }

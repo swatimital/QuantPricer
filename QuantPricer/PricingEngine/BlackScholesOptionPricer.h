@@ -4,6 +4,7 @@
 //
 //  Created by Swati Mital on 19/05/16.
 //  Copyright (c) 2016 Swati Mital. All rights reserved.
+//  Recipes from: http://finance.bi.no/~bernt/gcc_prog/recipes/recipes/node7.html
 //
 
 #ifndef __QuantPricer__BlackScholesOptionPricer__
@@ -43,16 +44,69 @@ namespace QuantPricer
                 return 0.5*(1.0 + sign*y);
             }
 
-            inline double BSPrice(double St, double K, double t, double T, double sigma, double rf, double div, bool call = true)
+            inline double BSPrice(double St, 
+                                  double K, 
+                                  double time,
+                                  double sigma, 
+                                  double rf, 
+                                  double div, 
+                                  bool call = true)
             {
-                double d1 = (log(St/K) + (rf+sigma*sigma*0.5)*(T-t)) / (sigma*sqrt(T-t));
-                double d2 = d1 - sigma*sqrt(T-t);
-                return (call ? (St*Phi(d1) - exp(-rf*(T-t))*K*Phi(d2)) : (exp(-rf*(T-t))*K*Phi(-d2) - St*Phi(-d1)));
+                double d1 = (log(St/K) + 
+                             (rf+sigma*sigma*0.5)*(time)) / (sigma*sqrt(time));
+                double d2 = d1 - sigma*sqrt(time);
+                return (call ? (St*Phi(d1) - exp(-rf*(time))*K*Phi(d2)) : (exp(-rf*(time))*K*Phi(-d2) - St*Phi(-d1)));
             }
             
-            inline double BSDelta(double St, double K, double t, double T, double sigma, double rf, double div, bool call=true)
+            inline double BSDelta(double St, 
+                                  double K, 
+                                  double time,
+                                  double sigma, 
+                                  double rf, 
+                                  double div, 
+                                  bool call=true)
             {
                 return 1.0;
+            }
+            
+            inline double BSVega(double St, 
+                                 double K, 
+                                 double time,
+                                 double sigma, 
+                                 double rf, 
+                                 double div)
+            {
+                double d1 = (log(St/K) + 
+                             (rf+sigma*sigma*0.5)*(time)) / (sigma*sqrt(time));
+                return St*sqrt(time)*Phi(d1);
+            }
+            
+            inline double ImpliedVolatility(double Vt, 
+                                            double St, 
+                                            double K, 
+                                            double time,
+                                            double rf, 
+                                            double div, 
+                                            bool call=true)
+            {
+                double sigma_low = 1e-5;
+                double price = BSPrice(St, K, time, sigma_low, rf, div, call);
+                if (price > Vt) return 0.0;
+                
+                const int MAX_ITERATIONS = 100;
+                const double ACCURACY = 1.0e-4;
+                double sigma = (Vt/St)/(0.398*sqrt(time));
+                
+                for (int i = 0; i < MAX_ITERATIONS; i++)
+                {
+                    price = BSPrice(St, K, time, sigma, rf, div, call);
+                    double diff = Vt - price;
+                    if (fabs(diff) < ACCURACY) return sigma;
+                    double vega = BSVega(St, K, time, sigma, rf, div);
+                    sigma = sigma + diff/vega;
+                }
+                
+                throw std::runtime_error("The IV calculation did not converge");
             }
         }
     }

@@ -22,39 +22,69 @@ using namespace std;
 #include "FFTMethods/BaseFFTMethod.h"
 #include "CharacteristicFunctionMethods/VarianceGammaMethod.h"
 #include "PricingEngine/FFTOptionPricer.h"
+#include "Calibration/ImpliedVolatility.h"
 
 using namespace QuantPricer::FFTMethods;
 using namespace QuantPricer::CharacteristicFunctionMethods;
 using namespace QuantPricer::PricingEngine;
 using namespace QuantPricer::FFT;
+using namespace QuantPricer::Calibration;
 using namespace std;
 
 int main(int argc, const char * argv[])
 {
-    double rf = 0.01;
-    double q = 0.0;
+    double rf = 0.05;
+    double q = 0.03;
     
-    double T = 1.0;
-    double St = 110.0;
-    double K = 111;
+    double T = 2.0;
+    double St = 100.0;
+    double K[] = {5.0, 10.0, 33.0, 43.0, 53.0, 60.0, 70.0, 74.0, 77.0, 80.0, 83.0, 90.0, 97.0, 100.0, 120.0, 130.0, 140.0, 150.0, 200.0};
     
-    double sigma = 0.5;
-    double nu = 0.5;
-    double theta = -0.2;
+    double sigma = 0.25;
+    double nu = 2.0;
+    double theta = 0.10;
     
-    boost::shared_ptr<BaseFFTMethod> fft_method(new BaseFFTMethod(rf,q,T));
-    boost::shared_ptr<VarianceGammaMethod> vg_method(new VarianceGammaMethod(theta, sigma,
-                                                                             nu, St,
-                                                                             rf,q,T));
+        
+    boost::shared_ptr<BaseFFTMethod> fft_method(new BaseFFTMethod());
+    boost::shared_ptr<VarianceGammaMethod> vg_method(
+                    new VarianceGammaMethod(theta, sigma, nu, St, rf, q, T));
     boost::shared_ptr<FFTOptionPricer> fft_option_pricer(new FFTOptionPricer());
     
-    double price = fft_option_pricer->GetCallPrice(K, vg_method, fft_method);
     
-    double bs_price = BlackScholesOptionPricer::BSPrice(St, K, 0, T, sigma, rf, q);
-    
-    std::cout << "Variance Gamma Call price is: " << price << std::endl;
-    std::cout << "Black Scholes Option price is: " << bs_price << std::endl;
+    for (bool call: {true})
+    {
+        auto atm_option_prices = fft_option_pricer->PrecomputeFFTOptionPrices(rf, q, T, call, true, vg_method, fft_method);
+        auto otm_option_prices = fft_option_pricer->PrecomputeFFTOptionPrices(rf, q, T, call, false, vg_method, fft_method);
         
+        ///// Start serialization
+        std::ofstream atm_fft_file;
+        std::ofstream otm_fft_file;
+        atm_fft_file.open("/Users/swatimital/GitHub/QuantPricer/Results/FFTATMCallPrices.csv");
+        otm_fft_file.open("/Users/swatimital/GitHub/QuantPricer/Results/FFTOTMCallPrices.csv");
+        
+        for (std::pair<double, double> opt: atm_option_prices)
+        {
+            atm_fft_file << opt.first << "," << opt.second << std::endl;
+        }
+        atm_fft_file.close();
+
+        
+        for (std::pair<double, double> opt: otm_option_prices)
+        {
+            otm_fft_file << opt.first << "," << opt.second << std::endl;
+        }
+        otm_fft_file.close();
+        ///// End serialization
+        
+        for(double k: K)
+        {
+            double price = fft_option_pricer->LinearInterpolateStrike(k/St, otm_option_prices);           
+            double bs_price = BlackScholesOptionPricer::BSPrice(St, k, T, sigma, rf, q, call);
+            std::cout << "Variance Gamma Option price for Strike: " << k << " is: " << price << std::endl;
+            std::cout << "Black Scholes Option price for Strike: " << k << " is: " << bs_price << std::endl;
+        }
+    }
+    
     QuantPricer::OptionPriceBounds::ComputeCallSpreadBounds();
     QuantPricer::OptionPriceBounds::ComputeCalendarSpreadBounds();
     QuantPricer::OptionPriceBounds::ComputeCallPricesAsFunctionOfK();
@@ -62,4 +92,7 @@ int main(int argc, const char * argv[])
     QuantPricer::OptionPriceBounds::ComputeStraddleBounds();
     QuantPricer::OptionPriceBounds::ComputeCallBounds();
     
+    ImpliedVolatility* imp_vol = new ImpliedVolatility();
+    std::ifstream file("/Users/swatimital/GitHub/QuantPricer/Inputs/spx_vols.csv");
+    imp_vol->PopulateData(boost::gregorian::from_string("2016/06/28"), file);
 }

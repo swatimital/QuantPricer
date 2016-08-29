@@ -8,42 +8,66 @@
 
 #include "FFTOptionPricer.h"
 #include "boost/bind.hpp"
+#include <fstream>
 
 namespace QuantPricer
 {
     namespace PricingEngine
     {
-        double FFTOptionPricer::LinearInterpolateStrike(
-            double K, std::vector<std::pair<double, double>> strike_call_pairs)
+        
+        std::vector<std::pair<double, double>> FFTOptionPricer::PrecomputeFFTOptionPrices   
+                                                        (double rf_rate,
+                                                          double dividend,
+                                                          double time_to_maturity,
+                                                          bool atm,
+                                                          bool call,
+                                                          boost::shared_ptr<CharacteristicFunctionMethods::ICharacteristicFunctionMethod> char_fn_method, 
+                                                          boost::shared_ptr<FFTMethods::BaseFFTMethod> fft_method)
         {
-            size_t n = strike_call_pairs.size();
+            return (fft_method->FFTEuropeanOptionPrices(boost::bind(boost::mem_fn(&CharacteristicFunctionMethods::ICharacteristicFunctionMethod::CharacteristicFunction), char_fn_method, _1),
+                                                   rf_rate,
+                                                   dividend,
+                                                   time_to_maturity, 
+                                                   atm, 
+                                                   call));
+        }
+        
+        double FFTOptionPricer::GetPutCallPrice(double St, 
+                                             double K,
+                                             double rf_rate,
+                                             double dividend,
+                                             double time_to_maturity,
+                                             bool call,
+                                             boost::shared_ptr<CharacteristicFunctionMethods::ICharacteristicFunctionMethod> char_fn_method, 
+                                             boost::shared_ptr<FFTMethods::BaseFFTMethod> fft_method)
+        {
+            double Kmod = K/St;
+            std::vector<std::pair<double, double>> option_prices = PrecomputeFFTOptionPrices(rf_rate, dividend, time_to_maturity, call, true, char_fn_method, fft_method);
+            
+            return(LinearInterpolateStrike(Kmod, option_prices));
+        }
+        
+        double FFTOptionPricer::LinearInterpolateStrike(double K, 
+                                                        std::vector<std::pair<double, double>> strike_option_price_pair)
+        {
+            size_t n = strike_option_price_pair.size();
             
             for (int i = 0; i < n-1; i++)
             {
-                if(K > strike_call_pairs[i].first && K <= strike_call_pairs[i+1].first)
+                if(K > strike_option_price_pair[i].first && K <= strike_option_price_pair[i+1].first)
                 {
-                    double K1 = strike_call_pairs[i].first;
-                    double K2 = strike_call_pairs[i+1].first;
-                    double C1 = strike_call_pairs[i].second;
-                    double C2 = strike_call_pairs[i+1].second;
+                    double K1 = strike_option_price_pair[i].first;
+                    double K2 = strike_option_price_pair[i+1].first;
+                    double C1 = strike_option_price_pair[i].second;
+                    double C2 = strike_option_price_pair[i+1].second;
                     
                     return((K-K1)*((C2-C1)/(K2-K1)) + C1);
                 }
             }
             
-            return strike_call_pairs[n-1].second;
+            return strike_option_price_pair[n-1].second;
             
         }
-        
-        double FFTOptionPricer::GetCallPrice(
-                double K,
-                boost::shared_ptr<CharacteristicFunctionMethods::ICharacteristicFunctionMethod> char_fn_method, 
-                boost::shared_ptr<FFTMethods::BaseFFTMethod> fft_method)
-        {
-        
-            std::vector<std::pair<double, double>> call_prices = fft_method->FFTCallPrices(boost::bind(boost::mem_fn(&CharacteristicFunctionMethods::ICharacteristicFunctionMethod::CharacteristicFunction), char_fn_method, _1));
-            
-            return(LinearInterpolateStrike(K, call_prices));
-        }
+
     }
 }

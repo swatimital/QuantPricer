@@ -78,7 +78,7 @@ namespace QuantPricer
                 double price_3 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K, t, T, sigma_mid, rf, div);
                 
                 std::vector<std::pair<double, boost::function<double(double)>>> payoffs;
-                payoffs.push_back(std::make_pair(T, boost::bind(OptionPayoffs::LongVanillaCallOption, _1,stock_prices[S], K)));
+                payoffs.push_back(std::make_pair(T, boost::bind(OptionPayoffs::LongVanillaCallOption, _1, stock_prices[S], K)));
                 
                 BarenblattDerivative bsb_prices = bsb_pricer.GetPrice(payoffs);
                 
@@ -125,14 +125,14 @@ namespace QuantPricer
             
             for (auto S = 0; S < stock_prices.size(); S++)
             {
-                double price_1 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_low, t, T, sigma_max, rf, div, false);
-                double price_2 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_high, t, T, sigma_max, rf, div);
+                double price_1 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_low, T-t, sigma_max, rf, div, false);
+                double price_2 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_high, T-t, sigma_max, rf, div);
                 
-                double price_3 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_low, t, T, sigma_mid, rf, div, false);
-                double price_4 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_high, t, T, sigma_mid, rf, div);
+                double price_3 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_low, T-t, sigma_mid, rf, div, false);
+                double price_4 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_high, T-t, sigma_mid, rf, div);
                 
-                double price_5 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_low, t, T, sigma_min, rf, div, false);
-                double price_6 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_high, t, T, sigma_min, rf, div);
+                double price_5 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_low, T-t, sigma_min, rf, div, false);
+                double price_6 = BlackScholesOptionPricer::BSPrice(stock_prices[S], K_high, T-t, sigma_min, rf, div);
                 
                 std::vector<std::pair<double, boost::function<double(double)>>> payoffs;
                 payoffs.push_back(std::make_pair(T, boost::bind(OptionPayoffs::LongStraddle, _1,stock_prices[S], K_low, K_high)));
@@ -349,7 +349,7 @@ namespace QuantPricer
             call_prices_file << "Strike, Long Call Prices, Long Put Prices" << "\n";
             for(auto K = 0; K < strike_rates.size(); K++)
             {
-                call_prices_file << strike_rates[K] << "," << BlackScholesOptionPricer::BSPrice(200.0, strike_rates[K], 0, T, sigma_mid, rf, div) << "," << BlackScholesOptionPricer::BSPrice(200.0, strike_rates[K], 0, T, sigma_mid, rf, div, false) << "\n";
+                call_prices_file << strike_rates[K] << "," << BlackScholesOptionPricer::BSPrice(200.0, strike_rates[K], 0, T, sigma_mid, rf, div) << "," << BlackScholesOptionPricer::BSPrice(200.0, strike_rates[K], T, sigma_mid, rf, div, false) << "\n";
             }
             
             call_prices_file.close();
