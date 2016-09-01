@@ -36,6 +36,7 @@ namespace QuantPricer
              */
             virtual std::vector<std::pair<double, double>> FFTEuropeanOptionPrices(
                      boost::function<std::complex<double>(std::complex<double>)> characteristic_fn,
+                     double St,
                      double risk_free_rate,
                      double dividend,
                      double time_to_maturity,
@@ -46,6 +47,9 @@ namespace QuantPricer
             /** @brief FFTOutputVector Given closed-form characteristic function of the underlying and a closed form Fourier Transform of the modified call price, this function performs a 1D Inverse Discrete Fourier Transform in order to compute the call prices. The technique implemented is from paper by Carr and Madan.            
              * @param fourier_transform: Closed form Fourier Transform of the modified call price            
              * @param characteristic_fn: Characteristic Function of the stochastic Process
+             * @param log_strike_level: Log Strike Level centered around At the Money Log Price
+             * @param risk_free_rate: Risk Free Rate
+             * @param time_to_maturity: Time to Maturity of the option
              * @return: Inverse Fourier Transform to the get the modified call prices.
              */
             virtual std::vector<std::complex<double>> FFTOutputVector(
@@ -55,12 +59,16 @@ namespace QuantPricer
                           double, 
                           double)> fourier_transform, 
                   boost::function<std::complex<double>(std::complex<double>)> characteristic_fn,
+                  double log_strike_level,
                   double risk_free_rate,
                   double time_to_maturity) const;
             
             /** @brief Given closed-form characteristic function of the underlying and a closed form Fourier Transform of the modified call price, this function performs a 1D Inverse Discrete Fourier Transform in order to compute the call prices. The technique implemented is from paper by Carr and Madan.            
              * @param fourier_transform: Closed form Fourier Transform of the modified call price            
              * @param characteristic_fn: Characteristic Function of the stochastic Process
+             * @param log_strike_level: Log Strike Level centered around At the Money Log Price
+             * @param risk_free_rate: Risk Free Rate
+             * @param time_to_maturity: Time to Maturity of the option
              * @return: Inverse Fourier Transform to the get the modified call prices.
              */
             virtual std::vector<std::complex<double>> FFTInputVector(
@@ -70,6 +78,7 @@ namespace QuantPricer
                        double, 
                        double)> fourier_transform, 
                   boost::function<std::complex<double>(std::complex<double>)> characteristic_fn,
+                  double log_strike_level,
                   double risk_free_rate,
                   double time_to_maturity) const;
             
@@ -111,6 +120,41 @@ namespace QuantPricer
                                                       double risk_free_rate,
                                                       double time_to_maturity) const;
             
+            /** @brief  Computes an additional integrand as described in this MSc thesis:
+             * http://ta.twi.tudelft.nl/mf/users/oosterle/oosterlee/ng.pdf by the function g(.) on Page 26.
+             * @param log_strike: Log Strike of the call option
+             * @param fourier_transform: Fourier Transform (analytic) of the modified call price
+             * @param characteristic_fn: Characteristic Function of the underlying 
+             * @param risk_free_rate: Risk Free Rate
+             * @param time_to_maturity: Time to Maturity
+             * @return: Returns the output of g_N
+             */
+            std::complex<double> IntegrandSum(double log_strike,
+             boost::function<std::complex<double>(double,
+                                                  boost::function<std::complex<double>(std::complex<double>)>,
+                                                  double, 
+                                                  double)> fourier_transform,
+             boost::function<std::complex<double>(std::complex<double>)> characteristic_fn,
+             double risk_free_rate, double time_to_maturity) const;
+            
+            /** @brief Simple sum of the inverse fourier transform. Uses N^2 steps
+             * @param fourier_transform: Fourier Transform (analytic) of the modified call price
+             * @param characteristic_fn: Characteristic Function of the underlying 
+             * @param risk_free_rate: Risk Free Rate
+             * @param time_to_maturity: Time to Maturity
+             * @param log_strike: Log Strike of the Option
+             * @return: Returns the call price
+             */
+
+            double NaiveImplementation(
+                                       boost::function<std::complex<double>(
+                                        double,
+                                        boost::function<std::complex<double>(std::complex<double>)>,
+                                        double, 
+                                        double)> fourier_transform,
+                                       boost::function<std::complex<double>(std::complex<double>)> characteristic_fn,
+                                       double risk_free_rate, double time_to_maturity,
+                                       double log_strike) const;
             
             
         protected:

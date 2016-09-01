@@ -22,17 +22,16 @@ namespace QuantPricer
         class BrownianMotionMethod : public ICharacteristicFunctionMethod
         {
         public:
-            BrownianMotionMethod(double theta, double sigma,
-                                double var_rate, double St,
-                                double rf_rate, double dividend,
+            BrownianMotionMethod(double sigma,
+                                double St,
+                                double rf_rate, 
+                                double dividend,
                                 double time_to_maturity);
-            virtual ~VarianceGammaMethod() {}
+            virtual ~BrownianMotionMethod() {}
             std::complex<double> CharacteristicFunction(std::complex<double> u);
             
         private:
-            double m_theta;
             double m_sigma;
-            double m_var_rate;
             double m_St;
             double m_rf_rate, m_time_to_maturity, m_dividend;
         };

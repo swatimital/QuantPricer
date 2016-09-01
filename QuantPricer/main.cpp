@@ -21,6 +21,8 @@ using namespace std;
 #include <boost/make_shared.hpp>
 #include "FFTMethods/BaseFFTMethod.h"
 #include "CharacteristicFunctionMethods/VarianceGammaMethod.h"
+#include "CharacteristicFunctionMethods/BrownianMotionMethod.h"
+#include "CharacteristicFunctionMethods/HestonStochVolMethod.h"
 #include "PricingEngine/FFTOptionPricer.h"
 #include "Calibration/ImpliedVolatility.h"
 
@@ -36,25 +38,37 @@ int main(int argc, const char * argv[])
     double rf = 0.05;
     double q = 0.03;
     
-    double T = 2.0;
+    double T = 0.25;
     double St = 100.0;
     double K[] = {5.0, 10.0, 33.0, 43.0, 53.0, 60.0, 70.0, 74.0, 77.0, 80.0, 83.0, 90.0, 97.0, 100.0, 120.0, 130.0, 140.0, 150.0, 200.0};
     
-    double sigma = 0.25;
+    double sigma = 0.81;
     double nu = 2.0;
     double theta = 0.10;
+    
+    double V0 = 0.1568;
+    double corr = -0.74;
+    double mean_rev_speed = 5.73;
+    double long_term_var = 0.05;
+    double vol_of_vol = sigma;
     
         
     boost::shared_ptr<BaseFFTMethod> fft_method(new BaseFFTMethod());
     boost::shared_ptr<VarianceGammaMethod> vg_method(
                     new VarianceGammaMethod(theta, sigma, nu, St, rf, q, T));
+    boost::shared_ptr<BrownianMotionMethod> bm_method(new BrownianMotionMethod(sigma, St, rf, q, T));
+    boost::shared_ptr<HestonStochVolMethod> hs_method(
+                     new HestonStochVolMethod(V0, mean_rev_speed, long_term_var,                                                                               vol_of_vol, corr, St, rf, q, T));
+                                              
+                                                                               
+    
     boost::shared_ptr<FFTOptionPricer> fft_option_pricer(new FFTOptionPricer());
     
     
     for (bool call: {true})
     {
-        auto atm_option_prices = fft_option_pricer->PrecomputeFFTOptionPrices(rf, q, T, call, true, vg_method, fft_method);
-        auto otm_option_prices = fft_option_pricer->PrecomputeFFTOptionPrices(rf, q, T, call, false, vg_method, fft_method);
+        auto atm_option_prices = fft_option_pricer->PrecomputeFFTOptionPrices(St, rf, q, T, call, true, hs_method, fft_method);
+        auto otm_option_prices = fft_option_pricer->PrecomputeFFTOptionPrices(St, rf, q, T, call, false, hs_method, fft_method);
         
         ///// Start serialization
         std::ofstream atm_fft_file;
@@ -77,8 +91,17 @@ int main(int argc, const char * argv[])
         ///// End serialization
         
         for(double k: K)
-        {
-            double price = fft_option_pricer->LinearInterpolateStrike(k/St, otm_option_prices);           
+        {   
+            double price;
+            if (k/St <= 1.5 && k/St >= 0.5)
+            {
+                price = fft_option_pricer->LinearInterpolateStrike(k, atm_option_prices);
+            }
+            else
+            {
+                price = fft_option_pricer->LinearInterpolateStrike(k, otm_option_prices);
+            }
+            
             double bs_price = BlackScholesOptionPricer::BSPrice(St, k, T, sigma, rf, q, call);
             std::cout << "Variance Gamma Option price for Strike: " << k << " is: " << price << std::endl;
             std::cout << "Black Scholes Option price for Strike: " << k << " is: " << bs_price << std::endl;

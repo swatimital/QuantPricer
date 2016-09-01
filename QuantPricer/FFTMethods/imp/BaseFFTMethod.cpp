@@ -18,52 +18,81 @@ namespace QuantPricer
     {
         BaseFFTMethod::BaseFFTMethod() :
             m_fft_eta(0.25),
-            m_fft_N(12),
-            m_alpha(1.5),
+            m_fft_N(11),
+            m_alpha(1.75),
             m_fft_transform(new FFT::FastFourierTransform(m_fft_N))
         {
             m_fft_transform->Initialize();
         }
         
+        double BaseFFTMethod::NaiveImplementation(
+                                                  boost::function<std::complex<double>(
+                                                   double,
+                                                   boost::function<std::complex<double>(std::complex<double>)>,
+                                                   double, 
+                                                   double)> fourier_transform,
+              boost::function<std::complex<double>(std::complex<double>)> characteristic_fn,
+                                                  double rf_rate, double T,
+                                                  double ku) const
+        {
+            int N = m_fft_transform->GetFFTArrayLength();
+            std::complex<double> img = std::complex<double>(0,1);
+            std::complex<double> sum = std::complex<double>(0,0);
+            for (int j = 1; j <= N; j++)
+            {
+                double nu = (j-1.0)*m_fft_eta;
+                sum += std::exp(-img*nu*ku)*fourier_transform(nu, characteristic_fn, rf_rate, T);
+            }
+            
+            return sum.real();
+        }
+        
         std::vector<std::pair<double, double>> BaseFFTMethod::FFTEuropeanOptionPrices(
                     boost::function<std::complex<double>(std::complex<double>)> characteristic_fn,
+                    double St,
                     double rf_rate,
                     double dividend,
                     double T,
                     bool at_the_money,
                     bool call) const
         {
-            // Perform Inverse DFT by first computing the input vector of Fourier Transform
-            // of the modified call price
-            std::vector<std::complex<double>> fft_out = at_the_money ?
-            FFTOutputVector(boost::bind(boost::mem_fn(&BaseFFTMethod::PsiFunction), this, _1,_2, _3, _4), characteristic_fn, rf_rate, T) : 
-            FFTOutputVector(boost::bind(boost::mem_fn(&BaseFFTMethod::GammaFunction), this, _1, _2, _3, _4), characteristic_fn, rf_rate,
-                                T);
             
+            auto ft_func = at_the_money ? 
+                boost::bind(boost::mem_fn(&BaseFFTMethod::PsiFunction), this, _1,_2, _3, _4): 
+                boost::bind(boost::mem_fn(&BaseFFTMethod::GammaFunction), this, _1, _2, _3, _4);
+
             // Length of the FFT Array
             double N = m_fft_transform->GetFFTArrayLength();
             // Lambda controls the spacing for FFT
             double lambda = (2*M_PI)/(N*m_fft_eta);
             // Log Strike Levels range from (-b, b)
-            double b = 0.5*N*lambda;
+            double b = 0.5*N*lambda + log(St);
             // Starting value of Log Strike
             double ku = -b;
-            
+
+            // Perform Inverse DFT by first computing the input vector of Fourier Transform
+            // of the modified call price
+            std::vector<std::complex<double>> fft_out = FFTOutputVector(ft_func, characteristic_fn, b, rf_rate, T);            
+                        
             // Output vector of option prices
             std::vector<std::pair<double, double>> option_prices(N);
             for (int i = 0; i < N; i++)
             {
+                double K = exp(ku);
                 // Compute the dampener depending on whether we want atm option price or otm option price
                 double dampener = at_the_money ? exp(-m_alpha*ku) : 1.0/sinh(m_alpha*ku);
-                double call_price = dampener*fft_out[i].real()/M_PI; 
-                option_prices[i] = call ? std::make_pair(exp(ku), call_price) : 
-                                          std::make_pair(exp(ku), 
-                                                         (call_price - 1.0 + exp(ku)*exp(-rf_rate*T)));
+                //std::complex<double> integrand_sum = IntegrandSum(ku, ft_func, characteristic_fn, rf_rate, T);
+                double call_price = dampener*(fft_out[i].real())/M_PI; 
+                //double call_price = (dampener/M_PI)*NaiveImplementation(ft_func, characteristic_fn, rf_rate, T, ku)*m_fft_eta;
+                option_prices[i] = call ? std::make_pair(K, call_price) : 
+                                          std::make_pair(K, (call_price - St + K*exp(-rf_rate*T)));
                 ku += lambda;
             }
             
             return option_prices;
         }
+        
+                                             
         
         std::vector<std::complex<double>>BaseFFTMethod::FFTOutputVector(
                              boost::function<std::complex<double>(
@@ -71,9 +100,9 @@ namespace QuantPricer
                                   boost::function<std::complex<double>(std::complex<double>)>,
                                   double, double)> fourier_transform,
                              boost::function<std::complex<double>(std::complex<double>)> characteristic_fn,
-                             double rf_rate, double T) const
+                             double b, double rf_rate, double T) const
         {
-            return (m_fft_transform->Execute(FFTInputVector(fourier_transform, characteristic_fn, rf_rate, T)));
+            return (m_fft_transform->Execute(FFTInputVector(fourier_transform, characteristic_fn, b, rf_rate, T)));
         }
         
                
@@ -85,24 +114,40 @@ namespace QuantPricer
                                     double, 
                                     double)> fourier_transform,
                                     boost::function<std::complex<double>(std::complex<double>)> characteristic_fn,
-                                    double rf_rate, double T
+                                    double b, double rf_rate, double T
                                 ) const
         {
             int N = m_fft_transform->GetFFTArrayLength();
             std::vector<std::complex<double>> in_vector(N);
             
-            double lambda = (2*M_PI)/(N*m_fft_eta);
-            double b = 0.5*N*lambda;
             double nu;
             for (int j = 0; j < N; j++)
             {
                 nu = j*m_fft_eta;
-                std::complex<double> psi = fourier_transform(nu, characteristic_fn, rf_rate, T);
+                std::complex<double> ft = fourier_transform(nu, characteristic_fn, rf_rate, T);
                 double simpson_weight = (m_fft_eta/3.0)*(3.0 + pow(-1.0,j+1)-QuantPricer::common::Maths::kronecker_delta(j));
-                in_vector[j] = exp(std::complex<double>(0,1)*nu*b)*simpson_weight*psi;
+                in_vector[j] = exp(std::complex<double>(0,1)*nu*b)*simpson_weight*ft;
             }
             
             return in_vector;
+        }
+        
+        std::complex<double> BaseFFTMethod::IntegrandSum(double ku,
+             boost::function<std::complex<double>(double,
+                                                 boost::function<std::complex<double>(std::complex<double>)>,
+                                                 double, 
+                                                 double)> fourier_transform,
+             boost::function<std::complex<double>(std::complex<double>)> characteristic_fn,
+             double rf_rate, double T) const
+        {
+            std::complex<double> img = std::complex<double>(0,1.0);
+            int N = m_fft_transform->GetFFTArrayLength();
+            double nu1 = m_fft_eta*(N-2);
+            double nu2 = m_fft_eta*(N-1);
+            std::complex<double> gv1 = exp(-img*nu1*ku)*fourier_transform(nu1, characteristic_fn, rf_rate, T);
+            std::complex<double> gv2 = exp(-img*nu2*ku)*fourier_transform(nu2, characteristic_fn, rf_rate, T);
+            
+            return ((m_fft_eta/3.0) * (gv1+gv2));
         }
         
         std::complex<double> BaseFFTMethod::PsiFunction(double u,
@@ -111,10 +156,9 @@ namespace QuantPricer
                                                         double T) const
         {
             return (
-                    exp(-rf_rate*T)*
-                    characteristic_fn(std::complex<double>(u, -(m_alpha+1))) /
-                    (m_alpha*m_alpha + m_alpha - u*u + (2*m_alpha+1)*u*
-                     std::complex<double>(0,1)));
+                    (std::exp(-rf_rate*T)*characteristic_fn(std::complex<double>(u, -(m_alpha+1)))) /
+                    (std::complex<double>(m_alpha*m_alpha + m_alpha - u*u, (2*m_alpha+1)*u))
+                    );
             
         }
         
